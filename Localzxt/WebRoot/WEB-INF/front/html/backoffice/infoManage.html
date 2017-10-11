@@ -1,0 +1,339 @@
+<div class="breadcrumbs" id="breadcrumbs">
+	<ul class="breadcrumb">
+		<li><i class="icon-home home-icon"></i> <a href="backHome.ofcx">首页</a>
+		</li>
+
+		<li><a href="#">信息管理</a></li>
+		<li class="active">信息口管理</li>
+	</ul>
+</div>
+<div class="page-content">
+	<div class="row">
+		<div class="header lighter">
+			<h3>
+				<button type="button" class="btn btn-success btn-sm" id="addBaseUrl"
+					onclick="DownList();">
+					<i class="icon-plus-sign"></i>添加
+				</button>
+			</h3>
+		</div>
+		<!--./page-header-->
+
+		<div class="col-xs-12">
+			<!-- PAGE CONTENT BEGINS -->
+			<table id="dataTypeGrid"></table>
+			<script type="text/javascript">
+				var $path_base = "/"; //this will be used in gritter alerts containing images
+			</script>
+
+			<!-- PAGE CONTENT ENDS -->
+		</div>
+	</div>
+</div>
+<!--./弹出框-->
+<div class="ui-widget-overlay"
+	style="display:none;  height: 100%; width: 100%; position: fixed; left: 0px; top: 0px; z-index: 1049; opacity: 0.3;"></div>
+<div
+	class="ui-widget ui-widget-content ui-corner-all ui-jqdialog jqmID3"
+	id="editmodgrid-table" dir="ltr" tabindex="-1" role="dialog"
+	aria-labelledby="edithdgrid-table" aria-hidden="false"
+	style="z-index: 1050; overflow: hidden; top: 256px; left: 214px; display: none;">
+	<div
+		class="ui-jqdialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix"
+		id="edithdgrid-table" style="cursor: move;">
+		<div class="widget-header">
+			<span id="editDataType" class="ui-jqdialog-title"
+				style="float: left;">新增数据</span> <a href="javascript:void(0)"
+				class="ui-jqdialog-titlebar-close ui-corner-all"
+				style="right: 0.3em;"><span class="ui-icon ui-icon-closethick"></span></a>
+		</div>
+	</div>
+	<div class="ui-jqdialog-content ui-widget-content"
+		id="editcntgrid-table">
+		<div>
+			<form name="FormPost" id="FrmGrid_grid-table" class="FormGrid"
+				onsubmit="return false;"
+				style="width:auto;overflow:auto;position:relative;height:auto;">
+				<table id="TblGrid_grid-table" class="EditTable" cellspacing="0"
+					cellpadding="0" border="0">
+					<tbody>
+						<tr id="FormError" style="display:none">
+							<td class="ui-state-error" colspan="2"></td>
+						</tr>
+						<tr style="display:none" class="tinfo">
+							<td class="topinfo" colspan="2"></td>
+						</tr>
+						<!-- <tr rowpos="1" class="FormData" id="tr_id">
+							<td class="CaptionTD">序号</td>
+							<td class="DataTD">&nbsp;<input type="text" id="id"
+								name="id" role="textbox"
+								class="FormElement ui-widget-content ui-corner-all"></td>
+						</tr> -->
+						<tr rowpos="1" class="FormData" id="tr_sdate">
+							<td class="CaptionTD">信息口名</td>
+							<td class="DataTD">&nbsp;<input type="text" id="typeName"
+								name="typeName" role="textbox"
+								class="FormElement ui-widget-content ui-corner-all"></td>
+						</tr>
+						<tr rowpos="2" class="FormData" id="tr_note">
+							<td class="CaptionTD">备注</td>
+							<td class="DataTD">&nbsp;<textarea rows="2" cols="10"
+									id="remarks" name="remarks" role="textbox" multiline="true"
+									class="FormElement ui-widget-content ui-corner-all"></textarea></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			<table border="0" cellspacing="0" cellpadding="0" class="EditTable"
+				id="TblGrid_grid-table_2">
+				<tbody>
+					<tr>
+						<td colspan="2">
+							<hr class="ui-widget-content" style="margin:1px">
+						</td>
+					</tr>
+					<tr id="Act_Buttons">
+						<td class="EditButton"><a href="javascript:void(0)"
+							id="sData"
+							class="fm-button ui-state-default ui-corner-all fm-button-icon-left btn btn-sm btn-primary"><i
+								class="icon-ok"></i>提交</a> <a href="javascript:void(0)" id="cData"
+							class="fm-button ui-state-default ui-corner-all fm-button-icon-left btn btn-sm"><i
+								class="icon-remove"></i>取消</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$("#sData,#cData,.ui-jqdialog-titlebar-close").on("click", function() {
+		$(".ui-widget-overlay").hide();
+		$("#editmodgrid-table").hide();
+	});
+	$("#addBaseUrl").on("click", function() {
+		$("#sData").attr("opr_type", "add");
+		$(".ui-widget-overlay").show();
+		$("#editmodgrid-table").show();
+		$("#editDataType").text("新增数据");
+		$("#FrmGrid_grid-table").attr("newsId", "");
+		$("#remarks").val("");
+		$("#typeName").val("");
+	})
+</script>
+<!--./弹出框结束-->
+<style type="text/css">
+fieldset select, fieldset input {
+	margin-right: 20px;
+}
+</style>
+<script src="front/js/backoffice/date-time/bootstrap-datepicker.min.js"></script>
+<script src="front/js/backoffice/jqGrid/jquery.jqGrid.min.js"></script>
+<script src="front/js/backoffice/jqGrid/i18n/grid.locale-en.js"></script>
+<script src="front/js/tools.js"></script>
+<link rel="stylesheet" type="text/css" href="front/css/pcweb/page.css"></link>
+<script src="front/js/backoffice/bootbox.min.js"></script>
+<script type="text/javascript">
+	//重置
+	function resetInput() {
+		$('#siteName').val('');
+		$('#siteUrl').val('');
+	}
+	jQuery(function($) {
+		var grid_selector = "#dataTypeGrid";
+		jQuery(grid_selector).jqGrid({
+			datatype : "local",
+			height : 450,
+			rownumbers : true,
+			rownumWidth : 60,
+			colNames : [ 'typeID', '信息口名', '备注', '操作' ],
+			colModel : [
+				{
+					name : 'typeId',
+					index : 'typeId',
+					width : 60,
+					sorttype : "int",
+					editable : true,
+					sortable : false,
+					hidden : true,
+					hidedlg : true
+				},
+				{
+					name : 'typeName',
+					index : 'typeName',
+					width : 90,
+					editable : true,
+					sortable : false,
+				},
+				{
+					name : 'remarks',
+					index : 'remarks',
+					width : 90,
+					editable : true,
+					sortable : false,
+				},
+				{
+					name : 'myac',
+					width : 80,
+					fixed : true,
+					sortable : false,
+					resize : false,
+				}
+			],
+
+			viewrecords : true,
+			altRows : true,
+			caption : "",
+			autowidth : true
+		});
+
+		jQuery(grid_selector).jqGrid('setLabel', 'rn', '序号');
+		//switch element when editing inline
+		function aceSwitch(cellvalue, options, cell) {
+			setTimeout(function() {
+				$(cell).find('input[type=checkbox]')
+					.wrap('<label class="inline" />')
+					.addClass('ace ace-switch ace-switch-5')
+					.after('<span class="lbl"></span>');
+			}, 0);
+		}
+		//enable datepicker
+		function pickDate(cellvalue, options, cell) {
+			setTimeout(function() {
+				$(cell).find('input[type=text]')
+					.datepicker({
+						format : 'yyyy-mm-dd',
+						autoclose : true
+					});
+			}, 0);
+		}
+
+		searchDataType(0);
+	});
+
+	$("#sData").click(function() {
+		//添加
+		if ($(this).attr("opr_type") == "add")
+			$.ajax({
+				url : "addDataType.ofc",
+				type : "post",
+				async : false,
+				data : {
+					typeName : $('#typeName').val(),
+					remarks : $('#remarks').val()
+				}
+			}).done(function(data) {
+				commonTip(data,
+					function() {
+						alert(data.success);
+						searchDataType(0);
+					});
+			}).fail(function() {
+				bootbox.alert("保存失败！");
+			}).always(function() {});
+		//修改
+		if ($(this).attr("opr_type") == "edit") {
+			$.ajax({
+				url : "updateDataType.ofc",
+				type : "post",
+				async : false,
+				data : {
+					typeID : $("#FrmGrid_grid-table").attr("newsId"),
+					typeName : $('#typeName').val(),
+					remarks : $('#remarks').val()
+				}
+			}).done(function(data) {
+				commonTip(data,
+					function() {
+						alert(data.success);
+						searchDataType(0);
+					});
+			}).fail(function() {
+				bootbox.alert("修改失败！");
+			}).always(function() {});
+		}
+	});
+
+	function searchDataType(pageStart) {
+		$.ajax({
+			async : false,
+			url : "getDataTypeList.ofc",
+			type : "POST",
+			dataType : "json"
+		}).done(function(data) {
+			commonTip(data,
+				function() {
+					$("#dataTypeGrid").jqGrid('clearGridData'); //清空表格
+					$("#dataTypeGrid").jqGrid('setGridParam', { // 重新加载数据
+						datatype : 'local',
+						data : data.data //  newdata 是符合格式要求的需要重新加载的数据 
+					}).trigger("reloadGrid");
+
+					//给每行添加编辑、删除按钮
+					var ids = jQuery("#dataTypeGrid").jqGrid('getDataIDs');
+					for (var i = 0; i < ids.length; i++) {
+						var id = ids[i];
+						modify = "<div title='编辑选定行' style='float:left;cursor:pointer;' class='ui-pg-div ui-inline-edit'><span class='ui-icon ui-icon-pencil' onclick='updateDataType(" + id + ");'></span></div>"; //这里的onclick就是调用了上面的javascript函数 Modify(id)
+						del = "<div title='删除选中行' style='float:left;margin-left:5px;' class='ui-pg-div ui-inline-del'><span class='ui-icon ui-icon-trash' onclick='deleteDataType(" + id + ");'></span></div>";
+						jQuery("#dataTypeGrid").jqGrid('setRowData', ids[i], {
+							myac : modify + del
+						});
+					}
+				}
+			);
+		}).fail(function() {
+			bootbox.alert("获取信息列表失败！");
+		}).always(function() {});
+	}
+	function deleteDataType(id) {
+		var rowDatas = $("#dataTypeGrid").jqGrid('getRowData', id);
+		bootbox.confirm({
+			message : "是否删除(" + rowDatas.typeName + ")的类型?",
+			buttons : {
+				cancel : {
+					label : '确定',
+					className : 'btn-success'
+				},
+				confirm : {
+					label : '取消',
+					className : 'btn-danger'
+				}
+			},
+			callback : function(result) {
+				console.log('This was logged in the callback: ' + result);
+				if (result == false) {
+					$.ajax({
+						url : "deleteDataType.ofc",
+						type : "post",
+						async : false,
+						data : {
+							typeID : rowDatas.typeId,
+						}
+					}).done(function(data) {
+						commonTip(data,
+							function() {
+								bootbox.alert(data.success);
+								searchDataType(0);
+							});
+					}).fail(function() {
+						bootbox.alert("删除失败！");
+					}).always(function() {});
+				}
+			}
+		});
+	}
+
+	function updateDataType(id) {
+		getAgainData(id);
+	}
+
+	function getAgainData(id) {
+		var rowDatas = $("#dataTypeGrid").jqGrid('getRowData', id);
+		$("#sData").attr("opr_type", "edit");
+		$(".ui-widget-overlay").show();
+		$("#editmodgrid-table").show();
+		$("#editDataType").text("修改数据");
+		$("#FrmGrid_grid-table").attr("newsId", rowDatas.typeId);
+		$("#remarks").val(rowDatas.remarks);
+		$("#typeName").val(rowDatas.typeName);
+	}
+</script>

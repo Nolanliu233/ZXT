@@ -1,0 +1,179 @@
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>网站公告</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=1" />
+		<link rel="stylesheet" type="text/css" href="front/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="front/css/pcweb/page.css" />
+
+		<!--[if lt IE 9]>
+			<script src="front/js/html5shiv.js"  type="text/javascript"></script>
+			<script src="front/js/respond.min.js"  type="text/javascript"></script>
+		<![endif]-->
+		<style type="text/css">
+			.list_company .news_name{
+				width: 540px;
+				float:left;
+				height: 35px;
+				line-height: 35px;
+			}
+			.main .content_left{
+				padding-top: 35px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+<div id="main" class='nav-index'>
+<div id="headers"></div>
+<article class="container clearfix main" >
+		<aside class="left_content float-left">
+			<div class="content_left">
+
+				<div class="content_txt float-left" id="index_info_list"></div>
+				<div class="tcdPageCode"></div>
+
+			</div>
+			
+		</aside>
+		<aside class="right_content float-right">
+		
+			<div id="userDataTypeBtns" class="content_right margin-bottom20" style="border-radius: 7px;"></div>
+		
+		
+			<div class="sub_menu">
+				<div class="menu_link">
+					<ul>
+						<li><a href="#">热门资讯</a></li>
+					</ul>
+				</div>
+				<!--<div class="more_link">你当前位置：<a href="index.html">首页</a> > 招聘新闻 </div>--> 
+			</div>
+			<div class="content_right"> 
+				<div class="news_list">
+
+					<ul id="hot_informations"></ul>
+
+				</div>
+			</div>
+			
+		</aside>
+	</article>
+</div>
+<section class="wrapper">
+	<article class="container clearfix">
+		<div id="footer"></div>
+	</article>
+</section>
+		
+		<script src="front/js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--[if lt IE 9]>
+			<script type="text/javascript">
+			 window.jQuery || document.write("<script type='text/javascript' src='http://cdn.bootcss.com/jquery/1.9.0/jquery.min.js'>"+"<"+"/script>");
+			</script>
+		<![endif]-->
+		<script src="front/js/pcweb/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="front/js/pcweb/scroll.js" type="text/javascript" charset="utf-8"></script>
+		<script src="front/js/pcweb/page.js" type="text/javascript" charset="utf-8"></script>
+		<script src="front/lib/underscore.js" type="text/javascript" charset="utf-8"></script>
+		<script src="front/js/basicParameter.js" type="text/javascript" charset="utf-8"></script>
+		<script src="front/js/tools.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$("#hor").Scroll({line:1,speed:500,timer:3000});
+			var nowPage = 1;
+			var pageSize = 10;
+			var pageCount = 1;
+			
+			//初始化加载列表
+			$("document").ready(
+				function(){
+					getUserDataType();
+					getList();
+					getHotInformations();}
+				);
+			//提取getList方法，频繁调用
+			function getList(){
+				$.ajax({
+					type:"post",
+					url:"newsList.htm",
+					data:{"nowPage":nowPage-1,"pageSize":pageSize},
+					success:function(data){
+						commonTip(data,function(){
+							$("#index_info_list").html("");
+							var newsList = data.data.newsList;
+								pageCount = data.data.pageCount;
+							for(var i=0;i<newsList.length;i++){
+									
+									var li = '<div class="list_company float-left"><ul class="news_name"><a class="ellipsis" title="'+newsList[i].title+'" href="newsContent.html?newsId='+newsList[i].newsId+'">'
+											+newsList[i].title+'</a></ul>'
+											+'<div class="float-right"><span>发布日期：'+newsList[i].docCreateTime+'</span></div>'
+											+'</div><div class="line_dotted clearfix"></div>';
+									$("#index_info_list").append(li);
+							}
+							$(".tcdPageCode").createPageBar({
+									totalCount:data.data.count,
+									pageCount:pageCount,
+									nowPage:nowPage,
+									pageSize:pageSize,
+									backFunction:function(pageStart,pageSize){
+										nowPage = pageStart;
+										//alert(nowPage+","+pageSize);
+										getList();
+									}
+								});
+						});
+					}
+				});
+			};
+			
+			//提取getHotInformations的getList方法
+			function getHotInformations(){
+				$.ajax({
+					type:"post",
+					url:"getHotInformations.htm",
+					data:{"nowPage":nowPage-1,"pageSize":pageSize},
+					success:function(data){
+						commonTip(data,function(){
+							$("#hot_informations").html("");
+							var hotInfo = data.data;
+							for(var i=0;i<hotInfo.length-2;i++){
+								var li = '<li>';
+									li+='<a class="ellipsis" href="infomation.html?sysId='+hotInfo[i].sysId+'" target="_blank"> · '+hotInfo[i].title+'</a>'+
+								'</li>';
+								$("#hot_informations").append(li);
+							}	
+						} );
+					}
+				});
+			};
+			//获取消息口和结果排序集
+			function getUserDataType(){
+				$.ajax({
+					type:"post",
+					async: true,
+					url:"getUserDateType.htm",
+					success:function(result){
+						commonTip(result, function(){
+							var list = result.data;
+							var length = list.length > 4 ? 4 : list.length;
+							if(list){
+								for(var i = 0; i < length ; i++){
+									$("#userDataTypeBtns").append(
+										'<button onclick="searchInfo('+list[i].dataTypeId+');" class="btn_other" type="button">'+list[i].dataTypeName+'</button>');
+								}
+							}
+							
+						});
+					}
+				});
+			}
+			
+			function searchInfo(dataTypeId){
+				window.location.href = "searchInfo.html?"+encode("typeId="+dataTypeId);
+			}
+		</script>
+	</body>
+
+</html>

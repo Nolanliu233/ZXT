@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="cn.tongyuankeji.entity.structure.Role" table="role">
+        <id name="sysId" type="java.lang.Integer">
+            <column name="sys_id" />
+            <generator class="identity" />
+        </id>
+        <property name="state" type="java.lang.Byte">
+            <column name="state" not-null="true">
+            	<comment>EnumGenericState</comment>
+            </column>
+        </property>
+        <property name="code" type="java.lang.String" insert="true" update="false">
+			<column name="code" length="3" not-null="true" unique="true" />
+		</property>
+        <property name="modifiedAt" type="java.sql.Timestamp">
+			<column name="modified_at" length="19" not-null="true" />
+		</property>
+		<property name="modifiedBy" type="java.lang.Integer">
+			<column name="modified_by" not-null="true" />
+		</property>	
+		<property name="modifiedByFullname" type="java.lang.String">
+			<column name="modified_by_fullname" length="62" not-null="true" />
+		</property>		
+        <property name="title" type="java.lang.String">
+            <column name="title" length="60" not-null="true" />
+        </property>
+        <property name="isSystemManager" type="java.lang.Boolean" insert="true" update="false">
+            <column name="is_system_manager" not-null="true"/>
+        </property>
+        <property name="ACL" type="java.lang.String">
+            <column name="ACL" not-null="true"/>
+        </property>
+        <property name="remarks" type="java.lang.String">
+            <column name="remarks" length="40" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

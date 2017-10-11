@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>编辑信息</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1.0" />
+		<!-- basic styles -->
+		<link href="front/css/backoffice/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="front/css/backoffice/font-awesome.min.css" />
+
+		<link rel="stylesheet" href="front/css/backoffice/jquery-ui-1.10.3.full.min.css" />
+		<link rel="stylesheet" href="front/css/backoffice/datepicker.css" />
+		<link rel="stylesheet" href="front/css/backoffice/ui.jqgrid.css" />
+		<link rel="stylesheet" type="text/css" href="front/css/backoffice/dropzone.css" />
+		<link rel="stylesheet" href="front/css/backoffice/ace.min.css" />
+		<link rel="stylesheet" href="front/css/backoffice/ace-rtl.min.css" />
+		<link rel="stylesheet" href="front/css/backoffice/ace-skins.min.css" />
+		<link rel="stylesheet" href="front/css/backoffice/daterangepicker.css" />
+		<link rel="stylesheet" href="front/css/backoffice/datepicker.css" />
+		<link rel="stylesheet" href="front/css/backoffice/bootstrap-timepicker.css" />
+		<style type="text/css">
+			.max-width {
+				float: none;
+				max-width: 1200px;
+				min-width: 1200px;
+				display: block;
+				margin: 0 auto;
+			}
+			
+			.form-horizontal .form-group {
+				float: none;
+				display: inline-block;
+				vertical-align: top;
+			}
+			
+			.dropzone {
+				min-height: 100px !important;
+			}
+			
+			.dropzone .dz-default.dz-message span img {
+				width: 100px;
+			}
+			
+			.tips {
+				padding: 20px;
+				background: #f2f2f2;
+				border-radius: 3px;
+			}
+			
+			.clear {
+				clear: both;
+			}
+			
+			#description {
+				height: 138px;
+				line-height: 18px;
+			}
+			
+			#title {
+				height: 66px;
+				line-height: 18px;
+			}
+			
+			.dataPicker {
+				height: 34px;
+			}
+			
+			.layer {
+				background: #fff;
+				position: fixed;
+				top: 10%;
+				left: 10%;
+				z-index: 9999;
+				padding: 10px;
+				border: 1px solid #ddd;
+			}
+			.pdnone{
+			padding:0;
+			}
+		</style>
+		<!--[if lte IE 8]>
+		  <link rel="stylesheet" href="front/css/backoffice/ace-ie.min.css" />
+		<![endif]-->
+
+		<script src="front/js/backoffice/ace-extra.min.js" type="text/javascript"></script>
+
+		<!--[if lt IE 9]>
+			<script src="front/js/backoffice/html5shiv.js"  type="text/javascript"></script>
+			<script src="front/js/backoffice/respond.min.js"  type="text/javascript"></script>
+		<![endif]-->
+	</head>
+
+	<body class="navbar-fixed skin-1">
+		<div class="navbar navbar-default navbar-fixed-top" id="navbar">
+			<div class="navbar-container" id="navbar-container">
+				<div class="navbar-header pull-left">
+					<a href="backHome.ofcx" class="navbar-brand"> <small> <i
+						class="icon-laptop"></i> 政信通-后台管理系统
+				</small>
+					</a>
+					<!-- /.brand -->
+				</div>
+				<!-- /.navbar-header -->
+				<div class="navbar-header pull-right" role="navigation">
+					<ul class="nav ace-nav">
+
+						<li class="">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle" id="userHeader"> </a>
+
+							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+								<li>
+									<a href="#"> <i class="icon-cog"></i> 设置
+									</a>
+								</li>
+
+								<li>
+									<a href="#"> <i class="icon-user"></i> 个人资料
+									</a>
+								</li>
+
+								<li class="divider"></li>
+
+								<li>
+									<a href="#"> <i class="icon-off"></i> 退出
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<!-- /.ace-nav -->
+				</div>
+				<!-- /.navbar-header -->
+			</div>
+			<!-- /.container -->
+		</div>
+		<!--头部-->
+		<div class="main-container" id="main-container">
+			<div class="main-container-inner">
+				<div class="page-content">
+					<div class="">
+						<div class="col-xs-12 max-width pdnone">
+							<form class="form-horizontal" role="form">
+								<div class="space-4"></div>
+								<div class="col-xs-8">
+									<div class="form-group col-xs-12">
+										<label class="col-sm-2 control-label no-padding-right" for="">标题：</label>
+										<div class="col-sm-9">
+											<textarea class="col-xs-12" id="input_title" placeholder="标题"></textarea>
+										</div>
+									</div>
+
+									<div class="form-group col-xs-12">
+										<label class="col-sm-2 control-label no-padding-right" for="">发布日期：</label>
+										<div class="col-xs-3 input-group">
+											<input type="text" id="input_releaseAt" placeholder="yyyy-mm-dd" class="dataPicker date-picker col-xs-12" data-date-format="yyyy-mm-dd" />
+										</div>
+									</div>
+
+									<div class="form-group col-xs-12">
+										<label class="col-sm-2 control-label no-padding-right" for="">申报开始日期：</label>
+										<div class="col-sm-9">
+											<input type="text" id="input_beginAt" placeholder="yyyy-mm-dd" class="date-picker col-xs-3" data-date-format="yyyy-mm-dd" />
+											<i class="pull-left text-center col-xs-1">-</i> <input type="text" id="input_endAt" placeholder="yyyy-mm-dd" class="date-picker col-xs-3" data-date-format="yyyy-mm-dd" />
+										</div>
+									</div>
+									<div class="form-group col-xs-12">
+										<label class="col-sm-2 control-label no-padding-right" for="">资源描述：</label>
+										<div class="col-sm-9">
+											<textarea class="col-xs-12" id="input_detailSource" placeholder="资源描述"></textarea>
+										</div>
+									</div>
+
+									<div class="form-group col-xs-12 hide">
+										<label class="col-sm-2 control-label no-padding-right" for="">图片路径：</label>
+										<div class="col-sm-7" id="dropzone">
+											<div action="//dummy.html" class="dropzone">
+												<div class="fallback">
+													<input name="file" type="file" multiple="" />
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+								<div class="col-xs-4 tips">
+									
+									<div class=" col-xs-12">
+										<div class="col-xs-6 text-right">来源网站:</div>
+										<div class="col-xs-6" id="tip_fromWebName"></div>
+									</div>
+									<div class=" col-xs-12">
+										<div class="col-xs-6 text-right">信息口:</div>
+										<div class="col-xs-6" id="tip_typeName"></div>
+									</div>
+
+									<div class=" col-xs-12">
+										<div class="col-xs-6 text-right">等级:</div>
+										<div class="col-xs-6" id="tip_levelName"></div>
+									</div>
+
+									<div class=" col-xs-12">
+										<div class="col-xs-6 text-right">状态:</div>
+										<div class="col-xs-6" id="tip_statusZh"></div>
+									</div>
+
+									<div class=" col-xs-12">
+										<div class="col-xs-6 text-right">地区:</div>
+										<div class="col-xs-6" id="tip_areaName"></div>
+									</div>
+
+									<div class=" col-xs-12">
+										<div class="col-xs-6 text-right">爬取信息时间:</div>
+										<div class="col-xs-6" id="tip_cawlerTime"></div>
+									</div>
+									<div class=" col-xs-12">
+										<div class="col-xs-6 text-right">动态分值:</div>
+										<div class="col-xs-6" id="tip_dynamicScore"></div>
+									</div>
+
+									<div class=" col-xs-12">
+										<div class="col-xs-6 text-right">资源固定分值:</div>
+										<div class="col-xs-6" id="tip_staticScore"></div>
+									</div>
+									<div class=" col-xs-12">
+										<div class="col-xs-6 text-right">查阅次数:</div>
+										<div class="col-xs-6" id="tip_browseCount"></div>
+									</div>
+								</div>
+
+								<div class="space-2 clear"></div>
+								<div class="form-group col-xs-12 clearfix pdnone">
+									<label class="col-xs-1 control-label no-padding-right" for="">正文：</label>
+									<div class="col-xs-12 clear pdnone">
+										<div class="wysiwyg-editor  col-xs-12 " id="contentArea" 
+											style="height: 400px !important;max-height: 400px !important;"></div>
+									</div>
+								</div>
+								<div>原文连接：<a id="baseUrl" target="_blank"></a></div>
+								<div class="form-group col-xs-11 clearfix max-width pdnone">
+									<div class="col-xs-12 pdnone">
+										<div class="header lighter">
+											<h3>
+												<button type="button" onclick="showAttachWin();" class="btn btn-success btn-sm"><i class="icon-plus-sign"></i>添加</button>
+											</h3>
+										</div>
+									</div>
+									<div class="col-xs-8 pdnone">
+										<!-- PAGE CONTENT BEGINS -->
+										<table id="grid-table"></table>
+										<script type="text/javascript">
+											var $path_base = "/"; //this will be used in gritter alerts containing images
+										</script>
+
+										<!-- PAGE CONTENT ENDS -->
+									</div>
+								</div>
+								<div class="clearfix form-actions">
+									<div class="col-md-12">
+									<div class="col-md-12">
+										<div class="col-md-offset-1 col-md-4"><button id="reviewBtn" class="btn btn-pink" type="button" onclick="review();">
+										<i class="icon-eye-open bigger-130"></i> 预览
+									</button> &nbsp; &nbsp; &nbsp;
+									</div>
+										<button id="releaseBtn" class="btn btn-info" type="button" onclick="saveInformation(true);">
+										<i class="icon-save bigger-130"></i> 保存
+									</button> &nbsp; &nbsp; &nbsp;
+										<button id="auditPassBtn" class="btn btn-success" type="button" onclick="saveAndAuditInformation(1);" style="display:none;">
+										<i class="icon-ok bigger-130"></i> 保存并发布
+									</button> &nbsp; &nbsp; &nbsp;
+										<button id="auditBackBtn" class="btn btn-danger" type="button" onclick="showAuditBackWin();" style="display:none;">
+										<i class="icon-retweet bigger-130"></i> 审核不通过
+									</button> &nbsp; &nbsp; &nbsp;
+										<button id="closeInfoBtn" class="btn btn-light" type="button" onclick="errInformation();" style="display:none;">
+										<i class="icon-remove bigger-130"></i> 非正文信息
+									</button>
+									</div>
+								</div>
+								<div class="hr hr-24"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- /.main-container-inner -->
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse"> <i class="icon-double-angle-up icon-only bigger-110"></i>
+			</a>
+		</div>
+		<!-- /.main-container -->
+		<!--./附件弹出框-->
+		<div class="ui-widget-overlay" style="height: 100%; width: 100%; position: fixed; left: 0px; top: 0px; z-index: 1049; opacity: 0.3;display:none;"></div>
+		<div class="layer col-xs-5" style="display:none;">
+			<div class="widget-header">
+				<span id="attachWinTitle" class="ui-jqdialog-title" style="float: left;"></span>
+				<span id="close" class="icon-remove ui-icon bigger-140" style="margin-top: 10px;margin-right: 10px;cursor: pointer;"></span>
+			</div>
+			<div class="space-4"></div>
+			<div class="tabbable">
+				<ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+					<li class="active">
+						<a data-toggle="tab" href="#wild">外部链接</a>
+					</li>
+
+					<li style="display:none;">
+						<a data-toggle="tab" href="#upload">上传</a>
+					</li>
+				</ul>
+
+				<div class="tab-content">
+					<div id="wild" class="tab-pane in active clearfix">
+						<form class="form-horizontal" role="form">
+							<div class="col-xs-12">
+								<div class="form-group col-xs-12">
+									<label class="col-sm-3 control-label no-padding-right" for="">文件名：</label>
+									<div class="col-sm-9">
+										<input type="text" id=attachId placeholder="文件名" class="col-xs-10" style="display:none;">
+										<input type="text" id="displayName" placeholder="文件名" class="col-xs-10">
+									</div>
+								</div>
+							</div>
+							<div class="space-4"></div>
+							<div class="col-xs-12">
+								<div class="form-group col-xs-12">
+									<label class="col-sm-3 control-label no-padding-right" for="">链接：</label>
+									<div class="col-sm-9">
+										<input type="text" id="attachUrl" placeholder="链接" class="col-xs-10">
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-8 text-right">
+								<button id="btnOK" class="btn btn-small btn-info" type="button" onclick="saveOrUpdateAttach();">
+										<i class="icon-save bigger-130"></i> 确定
+									</button> &nbsp; &nbsp; &nbsp;
+								<button id="btnCancel" class="btn btn-small btn-success" type="button">
+										<i class="icon-ok bigger-130"></i> 取消
+									</button>
+							</div>
+						</form>
+					</div>
+					<div id="upload" class="tab-pane clearfix">
+						<div class="widget-body">
+							<div class="widget-main col-xs-5">
+								<input type="file" id="uploadAttachInput" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--./end-->
+		<script type="text/javascript" src='front/js/backoffice/jquery-2.0.3.min.js'></script>
+		<script type="text/javascript" src='front/js/backoffice/ace.min.js'></script>
+		<!--[if IE]>
+			<script type="text/javascript">
+			 window.jQuery || document.write("<script type='text/javascript' src='front/js/backoffice/jquery-1.10.2.min.js'>"+"<"+"/script>");
+			</script>
+		<![endif]-->
+		<script src="front/js/backoffice/bootstrap.min.js" type='text/javascript'></script>
+		<script src="front/js/backoffice/typeahead-bs2.min.js" type='text/javascript'></script>
+		<!-- page specific plugin scripts -->
+		<!-- ace scripts -->
+		<script src="front/js/backoffice/ace-elements.min.js" type='text/javascript'></script>
+		<!-- inline scripts related to this page -->
+		<script src="front/js/backoffice/markdown/markdown.min.js"></script>
+		<script src="front/js/backoffice/markdown/bootstrap-markdown.min.js"></script>
+		<script src="front/js/backoffice/jquery.hotkeys.min.js"></script>
+		<script src="front/js/backoffice/bootstrap-wysiwyg.min.js"></script>
+		<script src="front/js/backoffice/bootbox.min.js"></script>
+		<script src="front/js/backoffice/date-time/bootstrap-datepicker.min.js"></script>
+		<script src="front/js/backoffice/date-time/bootstrap-timepicker.min.js"></script>
+		<script src="front/js/backoffice/date-time/moment.min.js"></script>
+		<script src="front/js/backoffice/date-time/daterangepicker.min.js"></script>
+		<script src="front/js/backoffice/dropzone.min.js"></script>
+		<script src="front/js/basicParameter.js"></script>
+		<script src="front/js/tools.js"></script>
+		<script src="front/js/backoffice/jqGrid/jquery.jqGrid.min.js"></script>
+		<script src="front/js/backoffice//jqGrid/i18n/grid.locale-en.js"></script>
+		<script type="text/javascript">
+			var BPR = BPR || {};
+			$(function() {
+				try {
+					$(".dropzone").dropzone({
+						paramName: "file", // The name that will be used to transfer the file
+						maxFilesize: 0.5, // MB
+						addRemoveLinks: true,
+						maxFiles: 1,
+						acceptedFiles: ".gif,.jpeg,.jpg,.png,.svg",
+						dictDefaultMessage: '<img src="assets/avatars/profile-pic.jpg"/><i>点击修改图片</i>',
+						dictResponseError: 'Error while uploading file!',
+						//change the previewTemplate to use Bootstrap progress bars
+						previewTemplate: "<div class='dz-preview dz-file-preview'>  <div class='dz-details'>    <div class='dz-filename'><span data-dz-name></span></div>    <div class=\'dz-size\' data-dz-size></div>    <img data-dz-thumbnail />  </div>  <div class=\'progress progress-small progress-striped active\'><div class=\'progress-bar progress-bar-success\' data-dz-uploadprogress></div></div>  <div class=\'dz-success-mark\'><span></span></div>  <div class=\'dz-error-mark\'><span></span></div>  <div class=\'dz-error-message\'><span data-dz-errormessage></span></div></div>"
+					});
+				} catch(e) {
+					alert('Dropzone.js does not support older browsers!');
+				}
+
+				$('.date-picker').datepicker({
+					autoclose: true
+				}).next().on(ace.click_event, function() {
+					$(this).prev().focus();
+				});
+
+				$('#input_releaseTime').timepicker({
+					minuteStep: 1,
+					showSeconds: true,
+					showMeridian: false
+				}).next().on(ace.click_event, function() {
+					$(this).prev().focus();
+				});
+				$('input[name=date-range-picker]').daterangepicker().prev().on(ace.click_event, function() {
+					$(this).next().focus();
+				});
+
+				$('#contentArea').ace_wysiwyg({
+					toolbar: ['font', null, 'fontSize', null,
+						{ name: 'bold', className: 'btn-info' },
+						{ name: 'italic', className: 'btn-info' },
+						{ name: 'strikethrough', className: 'btn-info' },
+						{ name: 'underline', className: 'btn-info' },
+						null,
+						{ name: 'insertunorderedlist', className: 'btn-success' },
+						{ name: 'insertorderedlist', className: 'btn-success' },
+						{ name: 'outdent', className: 'btn-purple' },
+						{ name: 'indent', className: 'btn-purple' },
+						null,
+						{ name: 'justifyleft', className: 'btn-primary' },
+						{ name: 'justifycenter', className: 'btn-primary' },
+						{ name: 'justifyright', className: 'btn-primary' },
+						{ name: 'justifyfull', className: 'btn-inverse' },
+						null,
+						{ name: 'createLink', className: 'btn-pink' },
+						{ name: 'unlink', className: 'btn-pink' },
+						null,
+						{ name: 'insertImage', className: 'btn-success' },
+						null, 'foreColor', null,
+						{ name: 'undo', className: 'btn-grey' },
+						{ name: 'redo', className: 'btn-grey' }
+					],
+					'wysiwyg': { fileUploadError: showErrorAlert }
+				}).prev().addClass('wysiwyg-style2');
+				
+
+				jQuery("#grid-table").jqGrid({
+					datatype: "local",
+					colNames: [ '文件名', '创建时间','大小', '原始链接','操作','保存文件名','下载地址'],
+					colModel: [
+						{ name: 'displayName', index: 'displayName', width: 200, sorttype: "string" ,
+							formatter: formatterDisplayName
+						},
+						{ name: 'createdAt', index: 'createdAt', width: 90, sorttype: "date",
+							formatter: formatterDataTime
+						},
+						{ name: 'fileSize', index: 'fileSize', width: 50,
+							formatter: renderSize
+						},
+						{ name: 'baseUrl', index: 'baseUrl', width: 200,
+							formatter: formatterBaseUrl
+						},
+						{ name: 'sysId', index: 'sysId', width: 50, sortable: false,
+							formatter: loadHandleBtn
+						},
+						{ name: 'saveName', index: 'saveName', hidden : true },
+						{ name: 'attachUrl', index: 'attachUrl', hidden : true }
+					],
+					viewrecords: true,
+					altRows: true,
+					rownumbers: true,
+					loadComplete: function() {
+					},
+					autowidth: true
+				});
+
+				//switch element when editing inline
+				function aceSwitch(cellvalue, options, cell) {
+					setTimeout(function() {
+						$(cell).find('input[type=checkbox]')
+							.wrap('<label class="inline" />')
+							.addClass('ace ace-switch ace-switch-5')
+							.after('<span class="lbl"></span>');
+					}, 0);
+				}
+				
+				$("#close").on('click', function() {
+					close();
+				});
+				$("#btnCancel,#btnOK").on("click",function(){
+					close();
+				});
+				$('#id-input-file-2').ace_file_input({
+					no_file: 'No File ...',
+					btn_choose: 'Choose',
+					btn_change: 'Change',
+					droppable: false,
+					onchange: null,
+					thumbnail: false //| true | large
+				});
+				init();
+			});
+
+			//上传文件错误提示
+			function showErrorAlert(reason, detail) {
+				var msg = '';
+				if(reason === '不支持的文件类型') {
+					msg = "格式不支持 " + detail;
+				} else {
+					console.log("上传错误", reason, detail);
+				}
+				$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
+					'<strong>上传错误</strong> ' + msg + ' </div>').prependTo('#alerts');
+			}
+
+			function init() {
+				$.ajax({
+					type: "get",
+					url: "getUserSummary.ofc",
+					success: function(data) {
+						var html = "";
+						var userName = data.data.userName;
+						var thumbFilePic = data.data.thumbFilePic;
+						html += "<img class='nav-user-photo' src='" + thumbFilePic + "' alt='头像' /><span class='user-info'><small>欢迎您,</small>" + userName + " </span> <i class='icon-caret-down'></i>";
+						$("#userHeader").html(html);
+					}
+				})
+				BPR.infoId = getUrlParams("infoId");
+				$.ajax({
+					async: false,
+					url: "getInfoById.ofc",
+					type: "GET",
+					data: {
+						infoId: BPR.infoId
+					},
+					contentType: "application/json",
+					dataType: "json"
+				}).done(function(result) {
+					commonTip(result, function() {
+						var data = result.data,
+							infoStatus = data.status;
+						$("[id^='tip_']").each(function() {
+							$(this).html(data[$(this).attr("id").replace("tip_", "")]);
+						});
+						$("#input_title").val(data.title);
+						$("#input_releaseAt").val(data.releaseAt);
+						$("#input_beginAt").val(data.beginAt);
+						$("#input_endAt").val(data.endAt);
+						$("#input_detailSource").val(data.detailSource);
+						$("#contentArea").html(data.content);
+						
+						$("#grid-table").jqGrid('clearGridData');  //清空表格
+						$("#grid-table").jqGrid('setGridParam',{  // 重新加载数据
+						      datatype:'local',
+						      data : result.data.attach   //  newdata 是符合格式要求的需要重新加载的数据 
+						}).trigger("reloadGrid");
+						$("#baseUrl").attr("href", data.baseUrl);
+						$("#baseUrl").html(data.baseUrl);
+						
+						initBtn(infoStatus);
+					});
+				}).fail(function() {
+					bootbox.alert("获取信息列表失败！");
+				}).always(function() {
+
+				});
+			}
+
+			function saveInformation(isAlert, cb) {
+				if(!$("#input_releaseAt").val()) {
+					alert("发布日期不能为空！");
+					return false;
+				}
+				$.ajax({
+					async: false,
+					url: "editInformation.ofc",
+					type: "POST",
+					data: {
+						infoId: BPR.infoId,
+						title: $("#input_title").val(),
+						releaseAt: $("#input_releaseAt").val(),
+						beginAt: $("#input_beginAt").val(),
+						endAt: $("#input_endAt").val(),
+						detailSource: $("#input_detailSource").val(),
+						content: $("#contentArea").html()
+					},
+					dataType: "json"
+				}).done(function(result) {
+					commonTip(result, function() {
+						if(isAlert) {
+							alert("保存成功！");
+						} else {
+							cb();
+						}
+					});
+				}).fail(function() {
+					bootbox.alert("获取信息列表失败！");
+				}).always(function() {
+
+				});
+			}
+
+			function saveAndAuditInformation(isRelease, remarks) {
+				saveInformation(false, function() {
+					$.ajax({
+						async: false,
+						url: "auditInfo.ofc",
+						type: "POST",
+						data: {
+							infoId: BPR.infoId,
+							toStatus: BPR.contentPageState.active,
+							remarks: remarks
+						},
+						dataType: "json"
+					}).done(function(result) {
+						commonTip(result, function() {
+							alert("保存发布并成功！");
+							initBtn(BPR.contentPageState.active);
+						});
+					}).fail(function() {
+						bootbox.alert("保存数据成功但发布失败！");
+					}).always(function() {
+
+					});
+				})
+			}
+
+			function showAuditBackWin() {
+				bootbox.prompt({
+					title: "请输入您审核不通过的原因!",
+					inputType: 'text',
+					buttons: {
+						confirm: {
+							label: '确定',
+							className: 'btn-success'
+						},
+						cancel: {
+							label: '取消',
+							className: 'btn-danger'
+						}
+					},
+					callback: function(result) {
+						$.ajax({
+							async: false,
+							url: "auditInfo.ofc",
+							type: "POST",
+							data: {
+								infoId: BPR.infoId,
+								toStatus: BPR.contentPageState.audit_back,
+								remarks: result
+							},
+							dataType: "json"
+						}).done(function(result) {
+							commonTip(result, function() {
+								alert("操作成功！");
+								initBtn(BPR.contentPageState.audit_back);
+							});
+						}).fail(function() {
+							bootbox.alert("操作失败！");
+						}).always(function() {
+
+						});
+					}
+				});
+			}
+
+			function errInformation() {
+				bootbox.prompt({
+					title: "请输入该页面非正文页的原因!",
+					inputType: 'text',
+					buttons: {
+						confirm: {
+							label: '确定',
+							className: 'btn-success'
+						},
+						cancel: {
+							label: '取消',
+							className: 'btn-danger'
+						}
+					},
+					callback: function(result) {
+						$.ajax({
+							async: false,
+							url: "errInformation.ofc",
+							type: "POST",
+							data: {
+								infoId: BPR.infoId,
+								remarks: result
+							},
+							dataType: "json"
+						}).done(function(result) {
+							commonTip(result, function() {
+								alert("操作成功，该页面已标记未非正文页！");
+								initBtn(BPR.contentPageState.closed);
+							});
+						}).fail(function() {
+							bootbox.alert("操作失败！");
+						}).always(function() {
+
+						});
+					}
+				});
+			}
+
+			function initBtn(infoStatus) {
+				if(infoStatus == BPR.contentPageState.active) {
+					$("#auditPassBtn").hide();
+					$("#auditBackBtn").hide();
+					$("#closeInfoBtn").show();
+				} else if(infoStatus == BPR.contentPageState.wait_audit) {
+					$("#auditPassBtn").show();
+					$("#auditBackBtn").show();
+					$("#closeInfoBtn").show();
+				} else if(infoStatus == BPR.contentPageState.closed) {
+					$("#auditPassBtn").show();
+					$("#auditBackBtn").hide();
+					$("#closeInfoBtn").hide();
+				} else {
+					$("#auditPassBtn").show();
+					$("#auditBackBtn").hide();
+					$("#closeInfoBtn").show();
+				}
+			}
+			function formatterDisplayName(cellValue, options, rowdata, action){
+				return "<a href='"+rowdata.attachUrl+"' target='_blank'>"+(cellValue || rowdata.saveName)+"</a>";
+			}
+			
+			function formatterDataTime(cellValue, options, rowdata, action){
+				return cellValue ? timestampToString(cellValue, true) : "";
+			}
+	
+			
+			function formatterBaseUrl(cellValue, options, rowdata, action){
+				var attachUrl = cellValue || rowdata.attachUrl;
+				return "<a href='"+attachUrl+"' target='_blank'>"+attachUrl+"</a>";
+			}
+			
+			//格式化操作列按钮
+			function loadHandleBtn(cellValue, options, rowdata, action){
+				var handleBtn = "";
+				handleBtn += "<div title='编辑' style='float:left;cursor:pointer;margin-left:5px;' class='ui-pg-div ui-inline-edit'>"+
+					"<span class='ui-icon ui-icon-pencil' attachId='"+rowdata.sysId+"' infoId='"+rowdata.infoId+
+					"' displayName='"+(rowdata.displayName || rowdata.saveName)+"' attachUrl='"+rowdata.attachUrl+
+					"' createdType='"+rowdata.createdType+"' onclick='showAttachWin(this)'></span></div>";
+			
+				return handleBtn + "<div title='删除' style='float:left;cursor:pointer;margin-left:5px;' class='ui-pg-div ui-inline-del'>"+
+						"<span class='ui-icon ui-icon-trash' onclick='showDeleteAttachWin("+cellValue+", this)'></span></div>";
+			}
+			//跳转到预览页面
+			function review(){
+				window.open("infomationReview.ofcx?sysId="+BPR.infoId+"&isReview=1");
+			}
+			
+			//打开新增编辑附件弹窗
+			function showAttachWin(_this) {
+				$("#attachWinTitle").text(_this ? "修改附件" : "新增附件");
+				$(".ui-widget-overlay").show();
+				$(".layer").show();
+				$("#displayName").val(_this ? $(_this).attr("displayName"):"");
+				$("#attachUrl").val(_this ? $(_this).attr("attachUrl"):"");
+				$("#attachId").val(_this ? $(_this).attr("attachId"):"");
+				$("#uploadAttachInput").val(_this ? $(_this).attr("displayName"):"");
+			}
+			
+			//关闭附件弹窗
+			function close(){
+				$(".ui-widget-overlay").hide();
+				$(".layer").hide();
+			}
+			
+			//删除附件
+			function showDeleteAttachWin(attachId){
+				bootbox.confirm({
+					message: "附件删除后不可恢复，是否删除！",
+					buttons: {
+						confirm: {
+							label: '确定删除',
+							className: 'btn-success'
+						},
+						cancel: {
+							label: '取消',
+							className: 'btn-danger'
+						}
+					},
+					callback: function(result){
+						if(result){
+							$.ajax({
+							    async: false,
+							    url: "deleteInfoAttach.ofc",
+							    type: "POST",
+							    data : {
+							    	attachId: attachId
+							    },
+							    dataType: "json"
+							}).done(function (result) {
+								commonTip(result, function(){
+									bootbox.alert("删除成功");
+									getAttachList();
+								});
+							}).fail(function () {
+								bootbox.alert("删除失败！");
+							}).always(function () {
+								
+							});
+						}
+					}
+				});
+			}
+			//删除或修改附件
+			function saveOrUpdateAttach(){
+				var attachId = $("#attachId").val();
+				$.ajax({
+				    async: false,
+				    url: attachId ? "editInfoAttach.ofc" : "addInfoAttach.ofc",
+				    type: "POST",
+				    data : {
+				    	infoId : BPR.infoId,
+				    	attachId: attachId,
+				    	displayName : $("#displayName").val(),
+				    	attachUrl : $("#attachUrl").val()
+				    },
+				    dataType: "json"
+				}).done(function (result) {
+					commonTip(result, function(){
+						bootbox.alert(attachId ? "修改成功" : "添加成功");
+						getAttachList();
+					});
+				}).fail(function () {
+					bootbox.alert(attachId ? "修改失败" : "添加失败");
+				}).always(function () {
+					
+				});
+			}
+			//查询附件列表
+			function getAttachList(){
+				$.ajax({
+				    async: false,
+				    url: "getInfoAttachList.ofc",
+				    type: "POST",
+				    data : {
+				    	infoId : BPR.infoId
+				    },
+				    dataType: "json"
+				}).done(function (result) {
+					commonTip(result, function(){
+						$("#grid-table").jqGrid('clearGridData');  //清空表格
+						$("#grid-table").jqGrid('setGridParam',{  // 重新加载数据
+						      datatype:'local',
+						      data : result.data   //  newdata 是符合格式要求的需要重新加载的数据 
+						}).trigger("reloadGrid");
+					});
+				}).fail(function () {
+					bootbox.alert("获取附件列表失败");
+				}).always(function () {
+					
+				});
+			}
+		</script>
+	</body>
+
+</html>

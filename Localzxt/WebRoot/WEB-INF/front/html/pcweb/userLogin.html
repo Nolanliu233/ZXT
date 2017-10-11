@@ -1,0 +1,110 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>政信通</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=1" />
+<link rel="stylesheet" type="text/css" href="front/css/style.css" />
+
+<!--[if lt IE 9]>
+	<script src="front/js/html5shiv.js"  type="text/javascript"></script>
+	<script src="front/js/respond.min.js"  type="text/javascript"></script>
+<![endif]-->
+</head>
+
+<body class='login-skin'>
+	<div id="main">
+		<!--header-->
+		<div id="headers">
+			<header>
+				<div class="top">
+					<img src="front/images/pcweb/banner.jpg" class="banner" /> <a
+						href="index.html"><img src="front/images/pcweb/logo.png"
+						class="logo" /></a>
+				</div>
+				<!--./top-->
+			</header>
+		</div>
+		<div class="main">
+			<div class="login-layout">
+				<h1>用户登录</h1>
+				<div class="">
+					<label class="label" for="phone">账号：</label> <input type="text"
+						id='phone' name="loginId" placeholder="请输入登录账号" />
+				</div>
+				<div class="">
+					<label class="label" for="pwd">密码：</label> <input type="password"
+						id='pwd' name="passWord" placeholder="请输入登录密码" />
+				</div>
+				<div class="">
+					<div class="float-left">
+						<input type="checkbox" id="rember" /> <label for="rember"><a>记住密码</a></label>
+					</div>
+					<a href="" class="float-right font-orange">忘记密码</a>
+				</div>
+				<div class="">
+					<button class="btn btn-login" id='btnLogin' onclick="login();">立即登录</button>
+				</div>
+				<i class="error"></i>
+			</div>
+			<!--./login-layout-->
+		</div>
+		<!--./.main-->
+		<!--footer-->
+		<div id="footer">
+			<footer class="txt-center" style="position: fixed;">
+				<!--<ul>
+				<li>友情链接： </li>
+				<li><a href="http://www.tongyuankeji.cn" target="_blank">成都通园科技</a></li>
+			</ul>-->
+				<div>
+					Copyright© 2012-2017 <a href="http://www.tongyuankeji.cn"
+						target="_blank">tongyuankeji.cn</a> All rights reserved. <a
+						href="http://www.tongyuankeji.cn" target="_blank">成都通园科技有限公司</a>
+					版权所有. 蜀ICP备16001418号
+				</div>
+			</footer>
+			<!--./footer-->
+		</div>
+	</div>
+	<!--./#main-->
+	<script src="front/js/jquery-3.2.1.min.js" type="text/javascript"
+		charset="utf-8"></script>
+	<!--[if lt IE 9]>
+	<script type="text/javascript">
+	 window.jQuery || document.write("<script type='text/javascript' src='http://cdn.bootcss.com/jquery/1.9.0/jquery.min.js'>"+"<"+"/script>");
+	</script>
+<![endif]-->
+	<script src="front/lib/jQuery.md5.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		$(function() {
+			//点击键盘登录
+			$(document).keypress(function(e) {
+				if (e.keyCode == 13) {
+				login();
+				}
+			});
+		});
+	
+		function login() {
+			var password = $.md5($("#pwd").val());
+			$.ajax({
+				type : "post",
+				url : "userLoginAct",
+				data : {
+					"loginId" : $("input[name='loginId']").val(),
+					"passWord" : password
+				},
+				success : function(data) {
+					console.log(data);
+					if (data.success != undefined) {
+						window.location.href = "information.html";
+					} else {
+						$(".error").html(data.err);
+					}
+				}
+			});
+		}
+	</script>
+</body>
+</html>

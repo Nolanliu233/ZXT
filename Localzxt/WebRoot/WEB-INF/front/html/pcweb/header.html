@@ -1,0 +1,117 @@
+<style>
+#main {
+	width: 100%;
+	padding-top: 275px;
+}
+
+#headers {
+	height: 278px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 87px;
+    box-sizing:border-box;
+}
+</style>
+<!--./header-->
+<section class="wrapper blank">
+	
+</section>
+<article class="head_top">
+	<div class="container clearfix">
+		<a href="information.html"><img src="front/images/pcweb/logo.png"
+			class="logoer float-left" /></a>
+		<div class="regsiter_login float-right">
+			<ul>
+				<li class="margin-right20">欢迎，<a href="#"><span
+						class="font-orange" id="personUserName">代平</span></a>登录
+				</li>
+				<li class="margin-right20"><a href="personCenter.html" target="_blank"><b>个人中心</b></a></li>
+				<li><a href="#" id="logOff"><b>注销</b></a></li>
+			</ul>
+		</div>
+		<div class="times_now float-right">
+			<center>
+				当前时间：<span class="now_time">2017/9/13 下午1:05:12</span>
+			</center>
+		</div>
+	</div>
+
+</article>
+<div class="container clearfix">
+	<div class="welcome float-left margin-top80">
+		<b class="font-orange font27">欢迎访问政信通服务系统！</b>
+	</div>
+	<div class="search_all float-right margin-top65">
+		<a href="#"><i class="fa fa-search float-left"></i></a>
+		<input type="text" id="header_input_search" autocomplete="off" placeholder="请输入搜索关键字" name="search">
+		<button class="float-right" type="button" id="header_btnSearch">搜索</button>
+	</div>
+</div>
+<div class="container">
+<div id="menu1" class="submenu">
+	<div class="menu_links">
+		<ul>
+			<li><a href="information.html">七天速递</a></li>
+			<li><a href="searchInfo.html">精准查询</a></li>
+			<li><a href="personCenter.html" target="_blank">个人中心</a></li>
+			<li><a href="contact.html">联系我们</a></li>
+		</ul>
+	</div>
+<!--<div class="more_link">你当前位置：<a href="index.html">首页</a> > 招聘新闻 </div>-->
+</div>
+
+
+
+<script type="text/javascript">
+	$(function(){
+		var pathName = window.location.pathname;
+		var linkEx = pathName.substr(pathName.length - 4, pathName.length);
+		
+		$.ajax({
+		    async: true,
+			type : "get",
+			url : "getUserSummary."+(linkEx == "ofcx" ? "ofc" : "htm")
+		}).done(function(data) {
+			commonTip(data, function() {
+				$("#personUserName").html(data.data.userName);
+			});
+		}).fail(function() {
+			alert("网络连接失败！");
+		}).always(function() {});
+		$("ul li a").each(function(){
+			$this = $(this);
+			if(pathName.indexOf($this.attr("href")) >=0){
+				$this.parent().addClass('on');
+				return true;
+			}
+		});
+		
+		var myDate;
+    	setInterval(function(){
+	        myDate = new Date();
+	        $(".now_time").html(myDate.toLocaleString());
+	    },1000);
+	    
+	    $("#logOff").click(function(){
+	    	$.ajax({
+			    async: true,
+				type : "get",
+				url : "userLogOff.htm"
+			}).done(function(data) {
+				commonTip(data, function() {
+					window.localtion.href = "pcLogin"
+				});
+			}).fail(function() {
+				alert("网络连接失败！");
+			}).always(function() {});
+	    });
+	    
+	});
+	
+	//全局搜索
+	$("#header_btnSearch").click(function(){
+		window.location.href="searchInfo.html?keyWord="+$(this).prev().val();
+	});
+</script>

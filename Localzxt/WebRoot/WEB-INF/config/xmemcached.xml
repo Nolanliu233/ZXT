@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  
+    xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">  
+    <!-- 引入属性文件 -->  
+    <!-- connectionPoolSize：缓存连接池数量  ，failureMode ：是否启用failure模式-->
+    <bean id="memcachedClientBuilder" class="net.rubyeye.xmemcached.XMemcachedClientBuilder" p:connectionPoolSize="20" p:failureMode="true">  
+        <!-- XMemcachedClientBuilder have two arguments.First is server list,and   
+            second is weights array. -->  
+        <constructor-arg>  
+        	<!-- 配置缓存服务器，可配置多个 -->
+            <list>  
+                <bean class="java.net.InetSocketAddress">  
+                    <constructor-arg>  
+                    	<!-- 缓存服务器Ip -->
+                        <value>localhost</value>  
+                    </constructor-arg>  
+                    <constructor-arg>  
+                    	<!-- 缓存服务器端口 -->
+                        <value>11210</value>  
+                    </constructor-arg>  
+                </bean>  
+            </list>  
+        </constructor-arg>  
+        <constructor-arg>  
+            <list>  
+            	<!-- 对应的缓存服务器权重。权重越大所保存的缓存数据就越多 -->
+                <value>1</value> 
+            </list>  
+        </constructor-arg>  
+        <property name="commandFactory">  
+            <bean class="net.rubyeye.xmemcached.command.TextCommandFactory" />  
+        </property>  
+        <property name="sessionLocator">  
+            <bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator" />  
+        </property>  
+        <property name="transcoder">  
+            <bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />  
+        </property>  
+    </bean>  
+    <!-- Use factory bean to build memcached client -->  
+    <bean  
+        id="memcachedClient"  
+        factory-bean="memcachedClientBuilder"  
+        factory-method="build"  
+        destroy-method="shutdown" />  
+</beans>  

@@ -1,0 +1,395 @@
+<div class="breadcrumbs" id="breadcrumbs">
+	<ul class="breadcrumb">
+		<li>
+			<i class="icon-home home-icon"></i>
+			<a href="backHome.ofcx">首页</a>
+		</li>
+
+		<li>
+			<a href="#">信息审核</a>
+		</li>
+		<li class="active">信息审核</li>
+	</ul>
+</div>
+<div class="page-content">
+	<div class="row">
+		<div class="page-header">
+			<fieldset>
+				<label for="proName">项目名称：</label>
+				<input type="text" placeholder="项目名称" id='proName'>
+				<label for="area">所在地区：</label>
+				<select id="select_area">
+				</select>
+				<label for="proLevel">项目级别：</label>
+				<select id="select_level">
+				</select>
+				<label for="state">状态：</label>
+				<select id="select_status">
+				</select>
+				<button type="button" class="btn btn-info btn-sm" onclick="searchInfoList();"><i class="icon-search"></i>搜索</button>
+				<button type="button" class="btn btn-light btn-sm" onclick="resetinput();"><i class="icon-refresh"></i>重置</button>
+			</fieldset>
+		</div>
+		<!-- <div class="page-header">
+			<fieldset>
+				<button type="button" class="btn btn-success btn-xs""><i class="icon-check"></i>审核</button>
+				<button type="button" class="btn btn-danger btn-xs"><i class="icon-retweet"></i>重置</button>
+			</fieldset>
+		</div> -->
+		
+		<!--./page-header-->
+
+		<div class="col-xs-12">
+			<!-- PAGE CONTENT BEGINS -->
+			<table id="informationGrid"></table>
+			<div class="tcdPageCode"></div>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+	fieldset select,
+	fieldset input {
+		margin-right: 20px;
+	}
+</style>
+<script src="front/js/backoffice/date-time/bootstrap-datepicker.min.js"></script>
+<script src="front/js/backoffice/jqGrid/jquery.jqGrid.min.js"></script>
+<script src="front/js/backoffice/jqGrid/i18n/grid.locale-en.js"></script>
+<script src="front/js/backoffice/bootbox.min.js"></script>
+<script src="front/js/basicParameter.js"></script>
+<script src="front/js/tools.js"></script>
+<script src="front/js/pcweb/page.js"></script>
+<link rel="stylesheet" type="text/css" href="front/css/pcweb/page.css"></link>
+<script type="text/javascript">
+
+	var grid_selector = "#informationGrid";
+	jQuery(function($) {
+
+		jQuery(grid_selector).jqGrid({
+			datatype: "local",
+			height: 650,
+			colNames: ['ID', '状态', '原始链接', '文章名称', '截止时间', '区域', '消息来源', '来源网站', '审核状态', '操作'],
+			colModel: [
+				{ name: 'sysId', index: 'sysId', hidden : true },
+				{ name: 'state', index: 'state', hidden : true },
+				{ name: 'fromWebURL', index: 'fromWebURL', hidden : true },
+				{ name: 'title', index: 'title', sorttype: "int", editable: true , 
+					formatter: editInfoLink
+				},
+				{ name: 'endAt', index: 'endAt', width: 70, editable: true, edittype: "date"},
+				{ name: 'areaName', index: 'areaName', width: 40, editable: true, edittype: "select", editoptions: { value: "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX" } },
+				{ name: 'typeName', index: 'typeName', width: 40, sortable: false, editable: true, edittype: "textarea", editoptions: { rows: "2", cols: "10" } },
+				{ name: 'fromWebName', index: 'fromWebName', width: 150 , 
+					formatter: openOriginalUrl
+				},
+				{ name: 'stateZh', index: 'stateZh', width: 40},
+				{name : 'sysId',	index : 'sysId',	width : 100,	fixed : true,sortable : false,resize : false,
+					formatter : loadHandleBtn,
+				}
+			],
+
+			viewrecords: true,
+			altRows: true,
+			rownumbers: true,
+			loadComplete: function() {
+			
+			},
+			autowidth: true
+		});
+
+
+		function style_delete_form(form) {
+			var buttons = form.next().find('.EditButton .fm-button');
+			buttons.addClass('btn btn-sm').find('[class*="-icon"]').remove(); //ui-icon, s-icon
+			buttons.eq(0).addClass('btn-danger').prepend('<i class="icon-trash"></i>');
+			buttons.eq(1).prepend('<i class="icon-remove"></i>')
+		}
+
+
+		function beforeDeleteCallback(e) {
+			var form = $(e[0]);
+			if (form.data('styled')) return false;
+
+			form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+			style_delete_form(form);
+			form.data('styled', true);
+			$("#dData").click(function() {
+				var id = $(grid_selector).jqGrid('getGridParam', 'selrow');
+				var rowDatas = $(grid_selector).jqGrid('getRowData', id);
+				deleteInfo(rowDatas.sysId);
+			});
+		}
+		searchInfoDict();
+	});
+
+	//获取查询条件基础数据
+	function searchInfoDict(){
+		$.ajax({
+		    async: true,
+		    url: "searchInfoDict.ofc",
+		    dataType: "json"
+		}).done(function (result) {
+			commonTip(result, function(){
+				var data = result.data; 
+				
+				$.each(data.status, function(index, statusItem){
+					$("#select_status").prepend('<option value="'+statusItem.name+'">'+statusItem.value+'</option>');
+				});
+				$("#select_status").val(BPR.contentPageState.wait_audit); 
+				
+				$.each(data.level, function(index, levelItem){
+					$("#select_level").append('<option value="'+levelItem.levelId+'">'+levelItem.levelName+'</option>');
+				});
+				$("#select_level option:first").prop("selected", 'selected'); 
+				
+				$.each(data.area, function(index, areaItem){
+					$("#select_area").append('<option value="'+areaItem.areaId+'">'+areaItem.areaName+'</option>');
+				});
+				$("#select_area option:first").prop("selected", 'selected'); 
+				
+				searchInfoList(0);
+			});
+		}).fail(function () {
+			bootbox.alert("获取查询条件备选数据失败！");
+		}).always(function () {
+			
+		});
+	}
+	
+	//查询列表数据
+	function searchInfoList(pageStart){
+		$.ajax({
+		    async: false,
+		    url: "searchInformationList.ofc",
+		    type: "POST",
+		    data : {
+		    	fuzzy: $("#proName").val(),
+		    	areaId: $("#select_area").val(),
+		    	levelId: $("#select_level").val(),
+		    	status: $("#select_status").val(),
+		    	pageStart : pageStart || 0
+		    },
+		    dataType: "json"
+		}).done(function (result) {
+			commonTip(result, function(){
+				$("#informationGrid").jqGrid('clearGridData');  //清空表格
+				$("#informationGrid").jqGrid('setGridParam',{  // 重新加载数据
+				      datatype:'local',
+				      data : result.data.infoList   //  newdata 是符合格式要求的需要重新加载的数据 
+				}).trigger("reloadGrid");
+				
+				$(".tcdPageCode").createPageBar({
+					pageCount : result.data.pageCount,
+					nowPage : (pageStart || 0) + 1,
+					pageSize : result.data.pageSize,
+					totalCount: result.data.count,
+					backFunction:function(pageStart,pageSize){
+						nowPage = pageStart;
+						searchInfoList(pageStart - 1);
+					}
+				});
+				
+			});
+		}).fail(function () {
+			bootbox.alert("获取信息列表失败！");
+		}).always(function () {
+			
+		});
+	}
+	function editInfoLink(cellValue, options, rowdata, action){
+		return "<a href='infoDetail.ofcx?infoId="+rowdata.sysId+"' target='_blank'>"+cellValue+"</a>";
+	}
+	
+	function openOriginalUrl(cellValue, options, rowdata, action){
+		return "<a href='"+rowdata.fromWebURL+"' target='_blank'>"+cellValue+"</a>";
+	}
+	
+	//格式化行内按钮，根据不同的状态显示不同的按钮
+	function loadHandleBtn(cellValue, options, rowdata, action){
+		var handleBtn = "";
+		if(rowdata.state != BPR.contentPageState.active){
+			handleBtn += "<div title='审核' style='float:left;cursor:pointer;margin-left:5px;' class='ui-pg-div ui-inline-edit'>"+
+				"<span infoTitle='"+rowdata.title+"' class='ui-icon icon-check' onclick='showAuditBackWin("+cellValue+", this)'></span></div>";
+		} 
+		if(rowdata.state != BPR.contentPageState.closed){
+			handleBtn += "<div title='非正文页（提取错误）' style='float:left;cursor:pointer;margin-left:5px;' class='ui-pg-div ui-inline-edit'>"+
+				"<span infoTitle='"+rowdata.title+"' class='grey ui-icon icon-remove' onclick='errInformation("+cellValue+", this)'></span></div>";
+		}
+		
+		return handleBtn + "<div title='删除' style='float:left;cursor:pointer;margin-left:5px;' class='ui-pg-div ui-inline-del'>"+
+				"<span infoTitle='"+rowdata.title+"' class='ui-icon ui-icon-trash' onclick='showDeleteInfo("+cellValue+", this)'></span></div>";
+	}
+	
+	//重置搜索条件
+	function resetinput(){
+		$("#proName").val("");
+		$("#select_status option:first").prop("selected", 'selected'); 
+		$("#select_level option:first").prop("selected", 'selected'); 
+		$("#select_area option:first").prop("selected", 'selected'); 
+	}
+	
+	function showAuditBackWin(infoId, _this){
+		var rowId = $(grid_selector).jqGrid("getGridParam","selrow");
+	 	var infoTitle;
+	 	if(infoId || rowId){
+	 		if(!infoId){
+	 			var rowData = $(grid_selector).jqGrid("getRowData",rowId);
+	 			infoId = rowData.sysId;
+	 			infoTitle = rowData.title;
+	 		} else {
+	 			infoTitle = $(_this).attr("infoTitle");
+	 		}
+	 		
+	 		bootBox.prompt({
+				title: "审核信息<b> 《 " + infoTitle + " 》</b>",
+				cancel:"审核不通过",
+				success:"审核通过",
+				placeholder: "请输入您的审核意见！",
+				cancelCallbak: function(remarks) {
+					auditInformation(infoId, BPR.contentPageState.audit_back, remarks);
+				},
+				successCallback: function(remarks) {
+					auditInformation(infoId, BPR.contentPageState.active, remarks);
+				}
+			});
+	 	} else {
+	 		bootbox.alert("请选择需要审核的行！");
+	 	}
+	}
+	
+	function errInformation(infoId, _this){
+		var rowId = $(grid_selector).jqGrid("getGridParam","selrow");
+	 	var infoTitle;
+	 	if(infoId || rowId){
+	 		if(!infoId){
+	 			var rowData = $(grid_selector).jqGrid("getRowData",rowId);
+	 			infoId = rowData.sysId;
+	 			infoTitle = rowData.title;
+	 		} else {
+	 			infoTitle = $(_this).attr("infoTitle");
+	 		}
+	 		bootbox.prompt({
+				title: "请输入该页面非正文页的原因!",
+				inputType: 'text',
+				buttons: {
+					confirm: {
+						label: '确定',
+						className: 'btn-success'
+					},
+					cancel: {
+						label: '取消',
+						className: 'btn-danger'
+					}
+				},
+				callback: function(result) {
+					if(result != null){
+						if(result){
+							$.ajax({
+							    async: false,
+							    url: "errInformation.ofc",
+							    type: "POST",
+							    data : {
+							    	infoId: infoId,
+							    	remarks : result
+							    },
+							    dataType: "json"
+							}).done(function (result) {
+								commonTip(result, function(){
+									alert("操作成功，该页面已标记未非正文页！");
+									searchInfoList($(".nowPage").text()*1 - 1);
+								});
+							}).fail(function () {
+								bootbox.alert("操作失败！");
+							}).always(function () {
+								
+							});
+						} else {
+							bootbox.alert("请输入您的意见！");
+						}
+					}
+				}
+			});
+	 	} else {
+	 		bootbox.alert("请选择需要更改的行！");
+	 	}
+	}
+	
+	function showDeleteInfo(infoId, _this){
+	 	var rowId = $(grid_selector).jqGrid("getGridParam","selrow");
+	 	var infoTitle;
+	 	if(infoId || rowId){
+	 		if(!infoId){
+	 			var rowData = $(grid_selector).jqGrid("getRowData",rowId);
+	 			infoId = rowData.sysId;
+	 			infoTitle = rowData.title;
+	 		} else {
+	 			infoTitle = $(_this).attr("infoTitle");
+	 		}
+			bootbox.confirm({
+				message: "确定删除信息<b> 《 " + infoTitle + " 》</b>",
+				buttons: {
+					confirm: {
+						label: '确定',
+						className: 'btn-success'
+					},
+					cancel: {
+						label: '取消',
+						className: 'btn-danger'
+					}
+				},
+				callback: function(result){
+					if(result){
+						$.ajax({
+						    async: false,
+						    url: "deleteInfo.ofc",
+						    type: "POST",
+						    data : {
+						    	infoId: infoId
+						    },
+						    dataType: "json"
+						}).done(function (result) {
+							commonTip(result, function(){
+								alert("删除成功");
+								searchInfoList($(".nowPage").text()*1 - 1);
+							});
+						}).fail(function () {
+							bootbox.alert("删除失败！");
+						}).always(function () {
+							
+						});
+					}
+				}
+			});
+	 	} else {
+	 		bootbox.alert("请选择需要删除的行！");
+	 	}
+	}
+	
+	function auditInformation(infoId, toStatus, remarks){
+		if(!remarks){
+			bootbox.alert("请输入您的审核意见！");
+			return false;
+		}
+		$.ajax({
+		    async: false,
+		    url: "auditInfo.ofc",
+		    type: "POST",
+		    data : {
+		    	infoId: infoId,
+		    	toStatus : toStatus,
+		    	remarks : remarks
+		    },
+		    dataType: "json"
+		}).done(function (result) {
+			commonTip(result, function(){
+				bootBox.close();
+				alert("审核成功！");
+				searchInfoList($(".nowPage").text()*1 - 1);
+			});
+		}).fail(function () {
+			bootbox.alert("审核失败！");
+		}).always(function () {
+			
+		});
+	}
+</script>

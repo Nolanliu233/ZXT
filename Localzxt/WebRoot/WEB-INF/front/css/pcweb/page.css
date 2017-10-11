@@ -1,0 +1,66 @@
+.tcdPageCode {
+	display: inline;
+	float: left;
+	width: 100%;
+	height: auto;
+	color: #ffffff;
+	text-align: center;
+	margin-top: 10px;
+}
+
+.tcdPageCode a {
+	width: auto;
+	height: 35px;
+	padding: 7px 12px;
+	color: #ffffff;
+	margin: 0 15px 0 0;
+	text-align: center;
+	background: #1777cb;
+	line-height: 35px;
+	cursor: pointer;
+	border-radius: 3px;
+	overflow: hidden;
+}
+
+.tcdPageCode a:hover {
+	color: #ffffff;
+	background: #e94f24;
+}
+
+.tcdPageCode span.nowPage {
+	width: auto;
+	height: 35px;
+	padding: 7px 12px;
+	margin: 0 15px 0 0;
+	text-align: center;
+	background: #e94f24;
+	line-height: 35px;
+	color: #FFFFFF;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.tcdPageCode span.disabled {
+	width: auto;
+	height: 35px;
+	padding: 7px 12px;
+	color: #ffffff;
+	margin: 0 15px 0 0;
+	text-align: center;
+	background: #ccc;
+	line-height: 35px;
+	cursor: pointer;
+	border-radius: 3px;
+	overflow: hidden;
+	
+}
+
+.pageSize input {
+	width: 40px;
+	height: 25px;
+	line-height: 25px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	margin: 0 10px;
+	text-align: center;
+}

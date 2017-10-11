@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+	default-lazy-init="true">
+
+	<bean id="XmcManager" class="cn.tongyuankeji.common.cache.XmcManagerImpl" />
+	<bean id="UserManager" class="cn.tongyuankeji.manager.user.UserManagerImpl" />
+	<bean id="AppSettingManager" class="cn.tongyuankeji.manager.dict.AppSettingManagerImpl" />
+	<bean id="RoleManager" class="cn.tongyuankeji.manager.structure.RoleManagerImpl" />
+	<bean id="BackUserManager" class="cn.tongyuankeji.manager.structure.BackUserManagerImpl" />
+	<bean id="GovController" class="cn.tongyuankeji.common.web.GovControllerImpl" />
+	<bean id="InformationSourceService" class="cn.tongyuankeji.manager.information.InformationSourcesServiceImpl"/>
+	<bean id="DataAreaService" class="cn.tongyuankeji.manager.basicData.DataAreaServiceImpl"/>
+	<bean id="DataTypeService" class="cn.tongyuankeji.manager.basicData.DataTypeServiceImpl"/>
+	<bean id="DataLevelService" class="cn.tongyuankeji.manager.basicData.DataLevelServiceImpl"/>
+	<bean id="NewsService" class="cn.tongyuankeji.manager.news.NewsServiceImpl"/>
+	<bean id="SiteLogService" class="cn.tongyuankeji.manager.log.SiteLogServiceImpl"/>
+	<bean id="ViewLogService" class="cn.tongyuankeji.manager.log.ViewLogServiceImpl"/>
+	<bean id="BaseUrlManager" class="cn.tongyuankeji.manager.baseurl.BaseUrlMangerImpl"/>
+	
+	<bean id="GenericDAO" class="cn.tongyuankeji.dao.GenericDAOImpl" />
+	<bean id="UserDAO" class="cn.tongyuankeji.dao.user.UserDAOImpl" />
+	<bean id="UserDataTypeDAO" class="cn.tongyuankeji.dao.user.UserDataTypeDAOImpl" />
+	<bean id="AppSettingDAO" class="cn.tongyuankeji.dao.dict.AppSettingDAOImpl" />
+	<bean id="RoleDAO" class="cn.tongyuankeji.dao.structure.RoleDAOImpl" />
+	<bean id="BackUserDAO" class="cn.tongyuankeji.dao.structure.BackUserDAOImpl" />
+	<bean id="GovernmentDAO" class="cn.tongyuankeji.dao.structure.GovernmentDAOImpl" />
+	<bean id="CompanyDAO" class="cn.tongyuankeji.dao.structure.CompanyDAOImpl" />
+	<bean id="InformationSourceDao" class="cn.tongyuankeji.dao.information.InformationSourcesDaoImpl"/>
+	<bean id="InformationAttachDao" class="cn.tongyuankeji.dao.information.InformationAttachDaoImpl"/>
+	<bean id="DataAreaDao" class="cn.tongyuankeji.dao.basicData.DataAreaDaoImpl"/>
+	<bean id="DataLevelDao" class="cn.tongyuankeji.dao.basicData.DataLevelDaoImpl"/>
+	<bean id="DataTypeDao" class="cn.tongyuankeji.dao.basicData.DataTypeDaoImpl"/>
+	<bean id="NewsDao" class="cn.tongyuankeji.dao.news.NewsDaoImpl"/>
+	<bean id="BaseUrlDao" class="cn.tongyuankeji.dao.baseurl.BaseUrlDaoImpl"/>
+	<bean id="SiteLogDao" class="cn.tongyuankeji.dao.log.SiteLogDaoImpl"/>
+	<bean id="ViewLogDao" class="cn.tongyuankeji.dao.log.ViewLogDaoImpl"/>
+</beans>

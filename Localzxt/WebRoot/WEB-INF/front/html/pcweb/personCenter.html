@@ -1,0 +1,286 @@
+<html>
+
+<head>
+<meta charset="UTF-8" />
+<title>个人中心</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=1" />
+<link rel="stylesheet" type="text/css" href="front/css/style.css" />
+<link href="front/fonts/css/font-awesome.min.css" rel="stylesheet"
+	type="text/css">
+<!--[if lt IE 9]>
+			<script src="front/js/html5shiv.js"  type="text/javascript"></script>
+			<script src="front/js/respond.min.js"  type="text/javascript"></script>
+		<![endif]-->
+</head>
+
+<body>
+<div id="main" class='nav-hide'>
+<div id="headers"></div>
+	<article class="container clearfix" id="person">
+
+			<div class="submenu" id="menu">
+				<div class="menu_links">
+
+					<ul>
+
+						<li class="on"><a href="#">基本信息</a></li>
+						<li><a href="#">安全信息</a></li>
+						<li><a href="#">个性设置</a></li>
+
+
+					</ul>
+				</div>
+				<div class="more_link">
+					<a href="information.html">返回首页</a>
+				</div>
+			</div>
+			<div class="contents">
+				<div class="tab-con">
+					<div class="col on">
+						<p>
+							<label for="account">登录账号：</label><input type="text"
+								id="input_loginName" disabled="disabled" /><i>登录系统的用户名</i>
+						</p>
+						<p>
+							<label for="account">姓名：</label><input type="text"
+								id="input_userName" /><i>真实姓名</i>
+						</p>
+						<p>
+							<label for="phone"><i>*</i>手机号码：</label><input type="text"
+								id="input_mobileNumber" /><i>真实的手机号码，可用于用户登录账号及找回密码</i>
+						</p>
+						<p>
+							<label for="email">电子邮箱：</label><input type="text"
+								id="input_email" /><i>用于发送及接受信息的电子邮件</i>
+						</p>
+						<p>
+							<label for="companyName"><i>*</i>公司名称：</label><input type="text"
+								id="input_title" /><i>您公司的全称</i>
+						</p>
+						<p>
+							<label for="organize">机构代码证：</label><input type="text"
+								id="input_companyCode" /><i>您公司的组织机构代码证</i>
+						</p>
+						<p>
+							<label for="compAddress">公司电话：</label><input type="text"
+								id="input_officPhone" /><i>公司电话，格式“区号-座机号”</i>
+						</p>
+						<p>
+							<label for="regAddress">注册地址：</label><input type="text"
+								id="input_address" /><i>您公司的注册地</i>
+						</p>
+						<button class="btn btnAlter" onclick="saveUser();">确认修改</button>
+					</div>
+					<div class="col">
+						<p>
+							<label for="originalPwd">原始密码：</label><input type="password"
+								id="originalPwd" /><i>您目前使用的账号密码</i>
+						</p>
+						<p>
+							<label for="newPwd">新 密 码：</label><input type="password"
+								id="newPwd" /><i>您的最新密码，长度6-14位之间</i>
+						</p>
+						<p>
+							<label for="reNewPwd">确认密码：</label><input type="password"
+								id="reNewPwd" /><i>请重复输入您的新密码</i>
+						</p>
+						<button class="btn btnAlter" onclick="changePwd();">确认修改</button>
+					</div>
+					<div class="col" style="margin-top: -50px;">
+						<div class="menu_sub">
+							<div class="link_menu">
+								<ul>
+									<li class="on"><a href="#">定制消息口</a></li>
+
+								</ul>
+							</div>
+
+						</div>
+						<div class="message">
+
+							<p id="check_datatype" class="check"></p>
+						</div>
+						<div class="menu_sub">
+							<div class="link_menu">
+								<ul>
+									<li class=""><a href="#">感兴趣的类型</a></li>
+
+								</ul>
+							</div>
+
+						</div>
+						<div class="message">
+
+							<p class="check">
+								<span><input type="checkbox" id="" /><label for="">科技</label></span>
+							</p>
+						</div>
+						<div class="menu_sub">
+							<div class="link_menu">
+								<ul>
+									<li class=""><a href="#">接受推送消息方式</a></li>
+
+								</ul>
+							</div>
+
+						</div>
+						<div class="message">
+
+							<p class="check">
+								<span><input type="checkbox" id="" /><label for="">邮件</label></span>
+								<span><input type="checkbox" id="" /><label for="">微信</label></span>
+							</p>
+						</div>
+						<div class="line_line clearfix"></div>
+						<div class="btn_down float-left">
+							<button class="btn_save" type="button" onclick="saveDataType();">提交保存</button>
+							<button class="btn_reset" type="button" value="" onclick="">
+								重 置</button>
+
+						</div>
+						<div class="float-right">
+							您的账号有效截至日期：<font class="font-orange">2020年1月1日</font>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</article>
+
+	<section class="wrapper">
+		<article class="container clearfix">
+			<div id="footer"></div>
+		</article>
+	</section>
+	<script src="front/js/jquery-3.2.1.min.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="front/lib/jQuery.md5.js"></script>
+	<!--[if lt IE 9]>
+			<script type="text/javascript">
+			 window.jQuery || document.write("<script type='text/javascript' src='http://cdn.bootcss.com/jquery/1.9.0/jquery.min.js'>"+"<"+"/script>");
+			</script>
+		<![endif]-->
+
+	<script src="front/js/pcweb/common.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="front/js/tools.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+			var $Mk = $(".menu_links ul li"),
+				$Lk = $(".tab-con .col");
+			$Mk.click(function() {
+				$(window).scrollTop(1);
+				var $t = $(this).index();
+				$Mk.removeClass('on');
+				$(this).addClass('on');
+				$Lk.removeClass('on')
+				$Lk.eq($t).addClass('on')
+			});
+			
+			$(function() {
+				$.ajax({
+					type : "get",
+					url : "getUserInfo.htm"
+				}).done(function(result) {
+					commonTip(result, function() {
+						var data = result.data;
+						$("input[id^='input_']").each(function(index, item){
+							$(item).val(data[$(item).attr("id").replace("input_","")] || "");
+						});
+						var dataTypes = data.dataTypes;
+						for(var dataType in dataTypes){
+							$("#check_datatype").
+								append('<span><input type="checkbox" id="datatype_'+dataTypes[dataType].typeId+'"/><label for="">'+dataTypes[dataType].typeName+'</label></span>');
+						}
+						
+						var userDataTypes = data.userDataTypes;
+						for(var userDataType in data.userDataTypes){
+							$("#datatype_" + userDataTypes[userDataType].datatypeId).attr("checked", true);
+						}
+						
+					});
+				}).fail(function() {
+					alert("网络连接失败！");
+				}).always(function() {});
+			})
+			
+			function saveUser(){
+				var data = {};
+				$("input[id^='input_']").each(function(index, item){
+					data[$(item).attr("id").replace("input_","")] = $(item).val();
+				});
+				
+				$.ajax({
+					type : "POST",
+					data : data,
+					url : "saveUser.htm"
+				}).done(function(result) {
+					commonTip(result, function() {
+						alert("保存成功！")
+					});
+				}).fail(function() {
+					alert("网络连接失败！");
+				}).always(function() {});
+			}
+			
+			function saveDataType(){
+				var data = {};
+				var dataTypes = [];
+				$("input[id^='datatype_']").each(function(index, item){
+					if($(item).get(0).checked){
+						dataTypes.push($(item).attr("id").replace("datatype_",""));
+					}
+				});
+				
+				$.ajax({
+					type : "POST",
+					data : {
+						dataTypeIds : dataTypes
+					},
+					url : "saveDataType.htm"
+				}).done(function(result) {
+					commonTip(result, function() {
+						alert("保存定制消息口成功！")
+					});
+				}).fail(function() {
+					alert("网络连接失败！");
+				}).always(function() {});
+			}
+			
+			function changePwd(){
+				var originalPwd = $("#originalPwd").val(),
+					newPwd = $("#newPwd").val(),
+					reNewPwd = $("#reNewPwd").val();
+				if(!originalPwd){
+					alert("请输入原始密码！");
+					return false;
+				}
+				
+				if(!newPwd){
+					alert("请输入新密码！");
+					return false;
+				}
+				
+				if(newPwd && newPwd != reNewPwd){
+					alert("两次数据的新密码不一致！");
+					return false;
+				}
+				$.ajax({
+					type : "POST",
+					data : {
+						userPwd : $.md5(originalPwd),
+						newUserPwd : newPwd
+					},
+					url : "saveUserModifyPwd.htm"
+				}).done(function(result) {
+					commonTip(result, function() {
+						alert("修改密码成功！")
+					});
+				}).fail(function() {
+					alert("修改密码失败，请重试！");
+				}).always(function() {});
+			}
+		</script>
+</body>
+
+</html>

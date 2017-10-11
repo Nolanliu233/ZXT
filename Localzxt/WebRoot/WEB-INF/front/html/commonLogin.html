@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>commonLogin.html</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+	<script src="front/js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  
+  <body>
+  </body>
+  <script>
+  	$(function(){
+		//平台、设备和操作系统   
+        var system = {  
+            win: false,  
+            mac: false,  
+            xll: false,  
+            ipad: false  
+        };  
+        //检测平台   
+        var p = navigator.platform;  
+        system.win = p.indexOf("Win") == 0;  
+        system.mac = p.indexOf("Mac") == 0;  
+        system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);  
+        system.ipad = (navigator.userAgent.match(/iPad/i) != null) ? true : false;  
+        //跳转语句，如果是手机访问就自动跳转到登录页面   
+        if (system.win || system.mac || system.xll || system.ipad) { 
+ 			window.location.href="pcLogin.html";
+        } else {  
+              
+            var ua = navigator.userAgent.toLowerCase();    
+            if(ua.match(/MicroMessenger/i)=="micromessenger") {    
+                //微信浏览器
+ 				window.location.href="pcLogin.html";
+            } else {    
+                //手机 
+ 				window.location.href="pcLogin.html";
+            }    
+        }  
+  	})
+  </script>
+</html>

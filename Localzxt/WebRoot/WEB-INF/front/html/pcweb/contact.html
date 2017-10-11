@@ -1,0 +1,115 @@
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>联系我们</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=1" />
+		<link href="front/css/style.css" rel="stylesheet" type="text/css"  />
+		<link href="front/fonts/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<!--[if lt IE 9]>
+			<script src="front/js/html5shiv.js"  type="text/javascript"></script>
+			<script src="front/js/respond.min.js"  type="text/javascript"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+	<div id="main" class='nav-deatil'>
+<div id="headers"></div>
+<article class="container clearfix main">
+			<div style="padding:20px;background:#fff;">
+
+				<div class="section" id="contact">
+					<div class="col">
+						<div class="con">
+							<p class="float-left"> 成都通园科技有限公司，是一家经历了10多年发展历程的集“软件研发、系统集成、信息咨询服务”为一体的IT高科技企业。经认定的“国家高新技术企业”，以开拓工业园区数字化应用、工业企业能源管理云服务平台、工业经济发展监测及服务平台、工业园区三维仿真虚拟现实VR平台为主要业务方向，致力于打造“工业园区大数据云平台”，支撑“工业园区数字化建设”的行业领军企业。
+							</p>
+							<img class="float-right" src="front/images/pcweb/ty_8_05.jpg" alt="" />
+						</div>
+						<!-- <div class="con">
+							<img class="float-left" src="front/images/pcweb/ty_8_05.jpg" alt="" />
+							<p class="float-right"> 成都通园科技有限公司，是一家经历了10多年发展历程的集“软件研发、系统集成、信息咨询服务”为一体的IT高科技企业。经认定的“国家高新技术企业”，以开拓工业园区数字化应用、工业企业能源管理云服务平台、工业经济发展监测及服务平台、工业园区三维仿真虚拟现实VR平台为主要业务方向，致力于打造“工业园区大数据云平台”，支撑“工业园区数字化建设”的行业领军企业。
+						</div> -->
+					</div>
+					<div class="contact-us">
+						<p>公司电话：028-83375686</p>
+						<p>公司邮箱：HR@tongyuankeji.cn</p>
+						<p>邮 编：610041</p>
+					</div>
+					<p class="map" id="map"></p>
+				</div>
+			</div>
+		</article>
+		</div>
+	<section class="wrapper">
+		<article class="container clearfix">
+			<div id="footer"></div>
+		</article>
+	</section>
+		<script src="front/js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+
+
+		<script src="front/js/tools.js" type="text/javascript" charset="utf-8"></script>
+		<script src="front/js/pcweb/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" charset="utf-8">
+			var map;
+
+			function initialize() {
+				map = new BMap.Map('map');
+				map.centerAndZoom(new BMap.Point(104.045879, 30.631854), 19);
+
+				map.enableScrollWheelZoom();
+				map.enableKeyboard();
+				map.enableDragging();
+				map.enableDoubleClickZoom()
+				var navControl = new BMap.NavigationControl({ anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_LARGE });
+				map.addControl(navControl);
+				addMapOverlay();
+			}
+
+			function addClickHandler(target, window) {
+				target.addEventListener("click", function() {
+					target.openInfoWindow(window);
+				});
+			}
+
+			function addMapOverlay() {
+				var markers = [{
+					content: "公司地址: 成都高新区高朋大道10号航利集团A座3楼",
+					title: '<h2 style="font-size: 16px;font-weight: bold;color: #333;">成都通园科技有限公司</h2>',
+					imageOffset: { width: -46, height: -21 },
+					position: { lat: 30.631854, lng: 104.045879 }
+				}, ];
+				for(var index = 0; index < markers.length; index++) {
+					var point = new BMap.Point(markers[index].position.lng, markers[index].position.lat);
+					var marker = new BMap.Marker(point, {
+						icon: new BMap.Icon("http://api.map.baidu.com/lbsapi/createmap/images/icon.png", new BMap.Size(20, 25), {
+							imageOffset: new BMap.Size(markers[index].imageOffset.width, markers[index].imageOffset.height)
+						})
+					});
+					var opts = {
+						width: 300,
+						height: 65,
+						title: markers[index].title,
+						enableMessage: false
+					};
+					var infoWindow = new BMap.InfoWindow(markers[index].content, opts);
+					addClickHandler(marker, infoWindow);
+					map.addOverlay(marker);
+				};
+			}
+
+			function loadScript() {
+				var script = document.createElement("script");
+				script.src = "http://api.map.baidu.com/api?v=2.0&ak=1&callback=initialize";
+				document.body.appendChild(script);
+			}
+
+			window.onload = loadScript;
+		</script>
+		
+		
+		
+		
+	</body>
+
+</html>

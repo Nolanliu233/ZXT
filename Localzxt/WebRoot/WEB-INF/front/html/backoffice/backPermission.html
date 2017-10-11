@@ -1,0 +1,259 @@
+<div class="breadcrumbs" id="breadcrumbs">
+	<ul class="breadcrumb">
+		<li><i class="icon-home home-icon"></i> <a href="backHome.ofcx">首页</a>
+		</li>
+
+		<li><a href="#">组织架构</a></li>
+		<li class="active">后台权限</li>
+	</ul>
+</div>
+<div class="page-content">
+	<div class="row">
+		<div class="page-header">
+			<fieldset>
+				<label for="state">状态：</label> <select id="select_state">
+				</select>
+				<button type="button" class="btn btn-info btn-sm"
+					onclick="searchRoleList();">
+					<i class="icon-search"></i>搜索
+				</button>
+				<button type="button" class="btn btn-light btn-sm"
+					onclick="resetInput();">
+					<i class="icon-refresh"></i>重置
+				</button>
+			</fieldset>
+		</div>
+
+		<div class="header lighter">
+			<h3>
+				<button type="button" class="btn btn-success btn-sm" id="addRole" onclick="addRole();">
+					<i class="icon-plus-sign"></i>添加
+				</button>
+			</h3>
+		</div>
+
+		<!--./page-header-->
+
+		<div class="col-xs-12">
+			<!-- PAGE CONTENT BEGINS -->
+			<table id="roleGrid"></table>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+fieldset select, fieldset input {
+	margin-right: 20px;
+}
+</style>
+<script src="front/js/backoffice/date-time/bootstrap-datepicker.min.js"></script>
+<script src="front/js/backoffice/jqGrid/jquery.jqGrid.min.js"></script>
+<script src="front/js/backoffice/jqGrid/i18n/grid.locale-en.js"></script>
+<script src="front/js/backoffice/bootbox.min.js"></script>
+<script src="front/js/basicParameter.js"></script>
+<script src="front/js/tools.js"></script>
+<link rel="stylesheet" type="text/css" href="front/css/pcweb/page.css"></link>
+<script type="text/javascript">
+	//重置
+	function resetInput() {
+		$("#select_state option:first").prop("selected", 'selected'); 
+	}
+
+	var grid_selector = "#roleGrid";
+	jQuery(function($) {
+
+		jQuery(grid_selector).jqGrid({
+			datatype : "local",
+			height : 650,
+			colNames : [ 'ID', '角色名称', '状态', '编号', '修改时间', '修改人ID', '修改人全名', '是否为系统管理员', '权限内容', '备注', '操作' ],
+			colModel : [
+				{name : 'sysId',index : 'sysId',hidden : true},
+				{name : 'title',index : 'title',sortable : false,editable : true},
+				{name : 'state',index : 'state',sortable : false,editable : true},
+				{name : 'code',index : 'code',sortable : false,editable : true},
+				{name : 'modifiedAt',index : 'modifiedAt',width: 110,editable : true,edittype : "date"},
+				{name : 'modifiedBy',index : 'modifiedBy',sortable : false,editable : true},
+				{name : 'modifiedByFullname',index : 'modifiedByFullname',sortable : false,editable : true},
+				{name : 'isSystemManager',index : 'isSystemManager',sortable : false,editable : true},
+				{name : 'ACL',index : 'ACL',sortable : false,editable : true},
+				{name : 'remarks',index : 'remarks',sortable : false,editable : true},
+				{name : 'operation',fixed : true,sortable : false,resize : false}
+			],
+
+			viewrecords : true,
+			altRows : true,
+			rownumbers : true,
+			loadComplete : function() {},
+			autowidth : true
+		});
+		getRoleDict();
+		searchRoleList(0);
+	});
+	//获取下拉框数据
+	function getRoleDict() {
+		var option = "";
+		option = "<option value='" + BPR.genericState.active + "'>正常状态</option><option value='" + BPR.genericState.hidden + "'>隐藏状态</option>";
+		$("#select_state").html(option);
+	}
+
+	//查询列表数据
+	function searchRoleList(pageStart) {
+		$.ajax({
+			async : false,
+			type : "GET",
+			url : "getRoleTable.ofc?statusMin="+$("#select_state").val(),
+			contentType: "application/json",
+			dataType : "json"
+		}).done(function(result) {
+			commonTip(result, function() {
+				$("#roleGrid").jqGrid('clearGridData'); //清空表格
+				$("#roleGrid").jqGrid('setGridParam', { // 重新加载数据
+					datatype : 'local',
+					data : result.data //  newdata 是符合格式要求的需要重新加载的数据 
+				}).trigger("reloadGrid");
+				
+				var ids = jQuery("#roleGrid").jqGrid('getDataIDs');
+					for (var i = 0; i < ids.length; i++) {
+						var id = ids[i];
+						var rowdata = $("#roleGrid").jqGrid('getRowData',id);
+						if(rowdata.state != "正常"){
+						hidden = "<div title='恢复' style='float:left;cursor:pointer;margin-left:5px;' class='ui-pg-div ui-inline-edit'><span class='ui-icon icon-check' onclick='showRoleData(" + id + ")'></span></div>";
+						}
+						if(rowdata.state != "隐藏"){
+						hidden = "<div title='编辑选定行' style='float:left;cursor:pointer;' class='ui-pg-div ui-inline-edit'><span class='ui-icon ui-icon-pencil' onclick='updateRoleData(" + id + ");'></span></div><div title='隐藏' style='float:left;cursor:pointer;margin-left:5px;' class='ui-pg-div ui-inline-edit'><span class='grey ui-icon icon-remove' onclick='hiddenRole("+id+")'></span></div>";
+						}
+						del = "<div title='删除' style='float:left;cursor:pointer;margin-left:5px;' class='ui-pg-div ui-inline-del'><span class='ui-icon ui-icon-trash' onclick='deleteRole(" + id + ")'></span></div>";
+						jQuery("#roleGrid").jqGrid('setRowData', ids[i], {
+							operation : hidden + del
+						});
+					}
+
+			});
+		}).fail(function() {
+			bootbox.alert("获取信息列表失败！");
+		}).always(function() {});
+	}
+	
+	function addRole(){
+	    window.open("addRoleInfo.ofcx");
+	}
+	function updateRoleData(id){
+	var rowDatas = $("#roleGrid").jqGrid('getRowData',id);
+	 window.open("editRoleInfo.ofcx?sysId="+rowDatas.sysId);
+	}
+	
+	//删除
+	function deleteRole(id){
+	  var rowDatas = $("#roleGrid").jqGrid('getRowData',id);
+	  bootbox.confirm({
+			message : "是否删除(" + rowDatas.title + ")的角色?",
+			buttons : {
+				cancel : {
+					label : '确定',
+					className : 'btn-success'
+				},
+				confirm : {
+					label : '取消',
+					className : 'btn-danger'
+				}
+			},
+			callback : function(result) {
+				console.log('This was logged in the callback: ' + result);
+				if (result == false) {
+					$.ajax({
+						url : "changeRoleStatus.ofc",
+						type : "post",
+						async : false,
+						data : {
+							sysId : rowDatas.sysId,
+							toStatus : BPR.genericState.deleted
+						}
+					}).done(function(data) {
+						commonTip(data,
+							function() {
+							    bootbox.alert("删除成功！");
+								searchRoleList(0);
+							});
+					}).fail(function() {
+						bootbox.alert("删除失败！");
+					}).always(function() {});
+				}
+			}
+		});
+	}
+	function hiddenRole(id){
+	var rowDatas = $("#roleGrid").jqGrid('getRowData',id);
+	  bootbox.confirm({
+			message : "是否隐藏(" + rowDatas.title + ")的角色?",
+			buttons : {
+				cancel : {
+					label : '确定',
+					className : 'btn-success'
+				},
+				confirm : {
+					label : '取消',
+					className : 'btn-danger'
+				}
+			},
+			callback : function(result) {
+				console.log('This was logged in the callback: ' + result);
+				if (result == false) {
+					$.ajax({
+						url : "changeRoleStatus.ofc",
+						type : "post",
+						async : false,
+						data : {
+							sysId : rowDatas.sysId,
+							toStatus : BPR.genericState.hidden
+						}
+					}).done(function(data) {
+						commonTip(data,
+							function() {
+							    bootbox.alert("隐藏成功！");
+								searchRoleList(0);
+							});
+					}).fail(function() {
+						bootbox.alert("隐藏失败！");
+					}).always(function() {});
+				}
+			}
+		});
+	}
+	function showRoleData(id){
+	var rowDatas = $("#roleGrid").jqGrid('getRowData',id);
+	  bootbox.confirm({
+			message : "是否恢复(" + rowDatas.title + ")的角色?",
+			buttons : {
+				cancel : {
+					label : '确定',
+					className : 'btn-success'
+				},
+				confirm : {
+					label : '取消',
+					className : 'btn-danger'
+				}
+			},
+			callback : function(result) {
+				console.log('This was logged in the callback: ' + result);
+				if (result == false) {
+					$.ajax({
+						url : "changeRoleStatus.ofc",
+						type : "post",
+						async : false,
+						data : {
+							sysId : rowDatas.sysId,
+							toStatus : BPR.genericState.active
+						}
+					}).done(function(data) {
+						commonTip(data,
+							function() {
+							    bootbox.alert("恢复成功！");
+								searchRoleList(0);
+							});
+					}).fail(function() {
+						bootbox.alert("恢复失败！");
+					}).always(function() {});
+				}
+			}
+		});
+	}
+</script>

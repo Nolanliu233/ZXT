@@ -1,0 +1,238 @@
+<html>
+
+<head>
+<meta charset="UTF-8" />
+<title>信息详情</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=1" />
+<link rel="stylesheet" type="text/css" href="front/css/style.css" />
+<link href="front/fonts/css/font-awesome.min.css" rel="stylesheet"
+	type="text/css">
+<link rel="stylesheet" type="text/css" href="front/css/pcweb/page.css" />
+<!--[if lt IE 9]>
+			<script src="front/js/html5shiv.js"  type="text/javascript"></script>
+			<script src="front/js/respond.min.js"  type="text/javascript"></script>
+		<![endif]-->
+<style type="text/css">
+.font-red{color:red;font:14px "\5FAE\8F6F\96C5\9ED1", "\5B8B\4F53", "\9ED1\4F53";}
+</style>
+</head>
+
+<body>
+<div id="main" class='nav-index'>
+<div id="headers"></div>
+<article class="container clearfix main" >
+			<aside class="left_content float-left">
+
+
+				<div class="content_left" style="padding-top:20px;">
+
+					<div class="content_txt float-left" id="index_info_list"></div>
+					<div class="tcdPageCode"></div>
+
+				</div>
+
+			</aside>
+			<aside class="right_content float-right">
+
+				<div id="userDataTypeBtns" class="content_right margin-bottom20"
+					style="border-radius: 7px;"></div>
+
+
+				<div class="sub_menu">
+					<div class="menu_link">
+						<ul>
+							<li><a href="#">热门资讯</a></li>
+						</ul>
+					</div>
+					<!--<div class="more_link">你当前位置：<a href="index.html">首页</a> > 招聘新闻 </div>-->
+				</div>
+				<div class="content_right">
+					<div class="news_list">
+
+						<ul id="hot_informations"></ul>
+
+					</div>
+				</div>
+				<div class="sub_menu margin-top20">
+					<div class="menu_link">
+						<ul>
+							<li><a href="#">网站公告</a></li>
+						</ul>
+					</div>
+					<div class="more_links">
+						<a href="newsIndex.html">更多...</a>
+					</div>
+				</div>
+				<div class="content_right">
+
+					<div class="news_list">
+
+						<ul id="index_news_list"></ul>
+
+					</div>
+				</div>
+			</aside>
+		</article></div>
+
+	<section class="wrapper">
+		<article class="container clearfix">
+			<div id="footer"></div>
+		</article>
+	</section>
+
+	<!--./#main-->
+	<script src="front/js/jquery-3.2.1.min.js" type="text/javascript"
+		charset="utf-8"></script>
+	<!--[if lt IE 9]>
+			<script type="text/javascript">
+			 window.jQuery || document.write("<script type='text/javascript' src='http://cdn.bootcss.com/jquery/1.9.0/jquery.min.js'>"+"<"+"/script>");
+			</script>
+		<![endif]-->
+
+	<script id="commonJS" src="front/js/pcweb/common.js"
+		type="text/javascript" charset="utf-8"></script>
+	<script src="front/js/tools.js" type="text/javascript" charset="utf-8"></script>
+</body>
+<script src="front/js/jquery-3.2.1.min.js" type="text/javascript"
+	charset="utf-8"></script>
+<!--[if lt IE 9]>
+			<script type="text/javascript">
+			 window.jQuery || document.write("<script type='text/javascript' src='http://cdn.bootcss.com/jquery/1.9.0/jquery.min.js'>"+"<"+"/script>");
+			</script>
+		<![endif]-->
+<script src="front/js/pcweb/common.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="front/js/pcweb/scroll.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="front/js/pcweb/page.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="front/lib/underscore.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="front/js/basicParameter.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="front/js/tools.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+			$("#hor").Scroll({line:1,speed:500,timer:3000});
+			var nowPage = 1;
+			var pageSize = 10;
+			var pageCount = 1;
+			
+			//初始化加载列表
+			$("document").ready(
+				function(){
+					getUserDataType();
+					getList();
+					getIndexNews();
+					getHotInformations();
+				}
+			);
+				
+			//获取消息口和结果排序集
+			function getUserDataType(){
+				$.ajax({
+					type:"post",
+					async: true,
+					url:"getUserDateType.htm",
+					success:function(result){
+						commonTip(result, function(){
+							var list = result.data;
+							var length = list.length > 4 ? 4 : list.length;
+							if(list){
+								for(var i = 0; i < length ; i++){
+									$("#userDataTypeBtns").append(
+										'<button onclick="searchInfo('+list[i].dataTypeId+');" class="btn_other" type="button">'+list[i].dataTypeName+'</button>');
+								}
+							}
+							
+						});
+					}
+				});
+			}
+			
+			//提取index_info_list的getList方法，频繁调用
+			//var ul_id = "#index_info_list"
+			function getList(){
+				$.ajax({
+					type:"post",
+					async: true,
+					url:"informationIndex.htm",
+					data:{"nowPage":nowPage-1,"pageSize":pageSize},
+					success:function(data){
+						commonTip(data,function(){
+							$("#index_info_list").html("");
+							var infoList = data.data.infoList;
+								pageCount = data.data.pageCount;
+							for(var i=0;i<infoList.length;i++){
+								var beginAt = infoList[i].beginAt==undefined?"暂无":infoList[i].beginAt;
+									var endAt = infoList[i].endAt==undefined?"一直有效":infoList[i].endAt;
+								var li = '<div class="list_company float-left"><ul><a href="infomation.html?sysId='+infoList[i].sysId+'">'
+											+infoList[i].title+'</a></ul><li>'+infoList[i].detailSource
+											+'</li><li class="margin-top10"><div class="float-left">申报开始日期：<font clas="font-blue">'
+											+beginAt+'</font>     申报截止日期：<font clas="font-orange">'
+											+endAt+'</font></div><div class="float-right"><span>消息来源：<font class="font-red">'+infoList[i].fromWebTitle+'</font></span></div>'+'</li></div><div class="line_dotted clearfix"></div>';
+								$("#index_info_list").append(li);
+							}
+							$(".tcdPageCode").createPageBar({
+									totalCount:data.data.count,
+									pageCount:pageCount,
+									nowPage:nowPage,
+									pageSize:pageSize,
+									backFunction:function(pageStart,pageSize){
+										nowPage = pageStart;
+										getList();
+									}
+								});
+						});
+					}
+				});
+			};
+			
+			//提取index_news_list的getList方法
+			function getIndexNews(){
+				$.ajax({
+					type:"post",
+					async: true,
+					url:"indexNewsList.htm",
+					data:{"nowPage":nowPage-1,"pageSize":pageSize},
+					success:function(data){
+						commonTip(data,function(){
+							$("#index_news_list").html("");
+							var newsList = data.data.newsList;
+							for(var i=0;i<newsList.length;i++){
+								var li = '<li>';
+									li+='<a class="ellipsis" href="newsContent.html?newsId='+newsList[i].newsId+'" target="_blank"> · '+newsList[i].title+'</a>'+
+								'</li>';
+								$("#index_news_list").append(li);
+							}
+						});
+					}
+				});
+			};
+			
+			//提取getHotInformations的getList方法
+			function getHotInformations(){
+				$.ajax({
+					type:"post",
+					async: true,
+					url:"getHotInformations.htm",
+					data:{"nowPage":nowPage-1,"pageSize":pageSize},
+					success:function(data){
+						commonTip(data,function(){
+							$("#hot_informations").html("");
+							var hotInfo = data.data;
+							for(var i=0;i<hotInfo.length-2;i++){
+								var li = '<li>';
+									li+='<a class="ellipsis" href="infomation.html?sysId='+hotInfo[i].sysId+'" target="_blank"> · '+hotInfo[i].title+'</a>'+
+								'</li>';
+								$("#hot_informations").append(li);
+							}	
+						} );
+					}
+				});
+			};
+			
+			function searchInfo(dataTypeId){
+				window.location.href = "searchInfo.html?"+encode("typeId="+dataTypeId);
+			}
+		</script>
+</html>

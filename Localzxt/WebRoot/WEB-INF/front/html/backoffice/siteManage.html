@@ -1,0 +1,516 @@
+<div class="breadcrumbs" id="breadcrumbs">
+	<ul class="breadcrumb">
+		<li><i class="icon-home home-icon"></i> <a href="backHome.ofcx">首页</a>
+		</li>
+
+		<li><a href="#">信息管理</a></li>
+		<li class="active">网站管理</li>
+	</ul>
+</div>
+<div class="page-content">
+	<div class="row">
+		<div class="page-header">
+			<fieldset>
+				<label for="siteName">网站名称：</label> <input type="text"
+					placeholder="网站名称" id='siteName'> <label for="siteUrl">网站URl：</label>
+				<input type="text" placeholder="网站URl" id='siteUrl'>
+				<button type="button" class="btn btn-info btn-sm"
+					onclick="searchBaseUrl();">
+					<i class="icon-search"></i>搜索
+				</button>
+				<button type="button" class="btn btn-danger btn-sm"
+					onclick="resetInput();">
+					<i class="icon-refresh"></i>重置
+				</button>
+			</fieldset>
+		</div>
+		<div class="header lighter">
+			<h3>
+				<button type="button" class="btn btn-success btn-sm" id="addBaseUrl"
+					onclick="DownList();">
+					<i class="icon-plus-sign"></i>添加
+				</button>
+			</h3>
+		</div>
+		<!--./page-header-->
+
+		<div class="col-xs-12">
+			<!-- PAGE CONTENT BEGINS -->
+			<table id="baseUrlGrid"></table>
+			<div class="tcdPageCode"></div>
+			<script type="text/javascript">
+				var $path_base = "/"; //this will be used in gritter alerts containing images
+			</script>
+
+			<!-- PAGE CONTENT ENDS -->
+		</div>
+	</div>
+</div>
+<!--./弹出框-->
+<div class="ui-widget-overlay"
+	style="display:none;  height: 100%; width: 100%; position: fixed; left: 0px; top: 0px; z-index: 1049; opacity: 0.3;"></div>
+<div
+	class="ui-widget ui-widget-content ui-corner-all ui-jqdialog jqmID3"
+	id="editmodgrid-table" dir="ltr" tabindex="-1" role="dialog"
+	aria-labelledby="edithdgrid-table" aria-hidden="false"
+	style="z-index: 1050; overflow: hidden; top: 256px; left: 214px; display: none;">
+	<div
+		class="ui-jqdialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix"
+		id="edithdgrid-table" style="cursor: move;">
+		<div class="widget-header">
+			<span id="editBaseUrlType" class="ui-jqdialog-title"
+				style="float: left;">新增数据</span> <a href="javascript:void(0)"
+				class="ui-jqdialog-titlebar-close ui-corner-all"
+				style="right: 0.3em;"><span class="ui-icon ui-icon-closethick"></span></a>
+		</div>
+	</div>
+	<div class="ui-jqdialog-content ui-widget-content"
+		id="editcntgrid-table">
+		<div>
+			<form name="FormPost" id="FrmGrid_grid-table" class="FormGrid"
+				onsubmit="return false;"
+				style="width:auto;overflow:auto;position:relative;height:auto;">
+				<table id="TblGrid_grid-table" class="EditTable" cellspacing="0"
+					cellpadding="0" border="0">
+					<tbody>
+						<tr id="FormError" style="display:none">
+							<td class="ui-state-error" colspan="2"></td>
+						</tr>
+						<tr style="display:none" class="tinfo">
+							<td class="topinfo" colspan="2"></td>
+						</tr>
+						<!-- <tr rowpos="1" class="FormData" id="tr_id">
+							<td class="CaptionTD">序号</td>
+							<td class="DataTD">&nbsp;<input type="text" id="id"
+								name="id" role="textbox"
+								class="FormElement ui-widget-content ui-corner-all"></td>
+						</tr> -->
+						<tr rowpos="1" class="FormData" id="tr_sdate">
+							<td class="CaptionTD">网站名</td>
+							<td class="DataTD">&nbsp;<input type="text" id="urlName"
+								name="urlName" role="textbox"
+								class="FormElement ui-widget-content ui-corner-all"></td>
+						</tr>
+						<tr rowpos="2" class="FormData" id="tr_stock">
+							<td class="CaptionTD">网站URL地址</td>
+							<td class="DataTD">&nbsp;<label class="inline"> <input
+									type="text" size="20" maxlength="30" id="urlAddress" name="url"
+									role="textbox"
+									class="FormElement ui-widget-content ui-corner-all ace ace-switch ace-switch-5"><span
+									class="lbl"></span></label></td>
+						</tr>
+						<tr rowpos="3" class="FormData" id="tr_ship">
+							<td class="CaptionTD">区域</td>
+							<td class="DataTD">&nbsp; <select id="areaData">
+							</select>
+							</td>
+						</tr>
+						<tr rowpos="4" class="FormData" id="tr_sdate">
+							<td class="CaptionTD">级别</td>
+							<td class="DataTD">&nbsp; <select id="levelData">
+							</select>
+							</td>
+						</tr>
+						<tr rowpos="5" class="FormData" id="tr_name">
+							<td class="CaptionTD">所属信息口</td>
+							<td class="DataTD">&nbsp; <select id="typeData">
+							</select>
+							</td>
+						</tr>
+						<!-- <tr rowpos="7" class="FormData" id="tr_note">
+							<td class="CaptionTD">操作</td>
+							<td class="DataTD">&nbsp;<textarea rows="2" cols="10"
+									id="note" name="note" role="textbox" multiline="true"
+									class="FormElement ui-widget-content ui-corner-all"></textarea></td>
+						</tr> -->
+						<!-- <tr class="FormData" style="display:none">
+							<td class="CaptionTD"></td>
+							<td colspan="1" class="DataTD"><input class="FormElement"
+								id="id_g" type="text" name="grid-table_id" value="_empty"></td>
+						</tr> -->
+					</tbody>
+				</table>
+			</form>
+			<table border="0" cellspacing="0" cellpadding="0" class="EditTable"
+				id="TblGrid_grid-table_2">
+				<tbody>
+					<tr>
+						<td colspan="2">
+							<hr class="ui-widget-content" style="margin:1px">
+						</td>
+					</tr>
+					<tr id="Act_Buttons">
+						<td class="EditButton"><a href="javascript:void(0)"
+							id="sData"
+							class="fm-button ui-state-default ui-corner-all fm-button-icon-left btn btn-sm btn-primary"><i
+								class="icon-ok"></i>提交</a> <a href="javascript:void(0)" id="cData"
+							class="fm-button ui-state-default ui-corner-all fm-button-icon-left btn btn-sm"><i
+								class="icon-remove"></i>取消</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$("#sData,#cData,.ui-jqdialog-titlebar-close").on("click", function() {
+		$(".ui-widget-overlay").hide();
+		$("#editmodgrid-table").hide();
+	});
+	$("#addBaseUrl").on("click", function() {
+		$("#sData").attr("opr_type", "add");
+		$(".ui-widget-overlay").show();
+		$("#editmodgrid-table").show();
+		$("#editBaseUrlType").text("新增数据");
+		$("#FrmGrid_grid-table").attr("newsId", "");
+		$("#urlAddress").val("");
+		$("#urlName").val("");
+	})
+</script>
+<!--./弹出框结束-->
+<style type="text/css">
+fieldset select, fieldset input {
+	margin-right: 20px;
+}
+</style>
+<script src="front/js/backoffice/date-time/bootstrap-datepicker.min.js"></script>
+<script src="front/js/backoffice/jqGrid/jquery.jqGrid.min.js"></script>
+<script src="front/js/backoffice/jqGrid/i18n/grid.locale-en.js"></script>
+<script src="front/js/tools.js"></script>
+<script src="front/js/pcweb/page.js"></script>
+<link rel="stylesheet" type="text/css" href="front/css/pcweb/page.css"></link>
+<script src="front/js/backoffice/bootbox.min.js"></script>
+<script type="text/javascript">
+	//重置
+	function resetInput() {
+		$('#siteName').val('');
+		$('#siteUrl').val('');
+	}
+	jQuery(function($) {
+		var grid_selector = "#baseUrlGrid";
+		jQuery(grid_selector).jqGrid({
+			datatype : "local",
+			height : 450,
+			rownumbers : true,
+			rownumWidth : 60,
+			colNames : [ 'urlID', '网站名', '网站URL地址', '区域', '级别', '所属信息口', '操作' ],
+			colModel : [
+				{
+					name : 'urlID',
+					index : 'urlID',
+					width : 60,
+					sorttype : "int",
+					editable : true,
+					sortable : false,
+					hidden : true,
+					hidedlg : true
+				},
+				{
+					name : 'urlName',
+					index : 'urlName',
+					width : 90,
+					editable : true,
+					sortable : false,
+				},
+				{
+					name : 'url',
+					index : 'url',
+					width : 150,
+					editable : true,
+					sortable : false,
+					editoptions : {
+						size : "20",
+						maxlength : "30"
+					}
+				},
+				{
+					name : 'dataAreaName',
+					index : 'dataAreaName',
+					width : 150,
+					editable : true,
+					sortable : false,
+					editoptions : {
+						size : "20",
+						maxlength : "30"
+					},
+				},
+				{
+					name : 'dataLevelName',
+					index : 'dataLevelName',
+					width : 150,
+					editable : true,
+					sortable : false,
+					editoptions : {
+						size : "20",
+						maxlength : "30"
+					},
+				},
+				{
+					name : 'dataTypeName',
+					index : 'dataTypeName',
+					width : 150,
+					editable : true,
+					sortable : false,
+					editoptions : {
+						size : "20",
+						maxlength : "30"
+					},
+				},
+				{
+					name : 'myac',
+					width : 80,
+					fixed : true,
+					sortable : false,
+					resize : false,
+				}
+			],
+
+			viewrecords : true,
+			rowNum : 20,
+			rowList : [ 10, 20, 30 ],
+			altRows : true,
+			caption : "",
+			autowidth : true
+		});
+
+		jQuery(grid_selector).jqGrid('setLabel', 'rn', '序号');
+		//switch element when editing inline
+		function aceSwitch(cellvalue, options, cell) {
+			setTimeout(function() {
+				$(cell).find('input[type=checkbox]')
+					.wrap('<label class="inline" />')
+					.addClass('ace ace-switch ace-switch-5')
+					.after('<span class="lbl"></span>');
+			}, 0);
+		}
+		//enable datepicker
+		function pickDate(cellvalue, options, cell) {
+			setTimeout(function() {
+				$(cell).find('input[type=text]')
+					.datepicker({
+						format : 'yyyy-mm-dd',
+						autoclose : true
+					});
+			}, 0);
+		}
+		searchBaseUrl(0);
+	});
+
+	$("#sData").click(function() {
+		//添加
+		if ($(this).attr("opr_type") == "add")
+			$.ajax({
+				url : "addData.ofc",
+				type : "post",
+				async : false,
+				data : {
+					urlName : $('#urlName').val(),
+					url : $('#urlAddress').val(),
+					urlArea : $('#areaData').val(),
+					urlLevel : $('#levelData').val(),
+					urlType : $('#typeData').val(),
+				}
+			}).done(function(data) {
+				commonTip(data,
+					function() {
+						alert(data.success);
+						searchBaseUrl(0);
+					});
+			}).fail(function() {
+				bootbox.alert("保存失败！");
+			}).always(function() {});
+		//修改
+		if ($(this).attr("opr_type") == "edit") {
+			$.ajax({
+				url : "updateData.ofc",
+				type : "post",
+				async : false,
+				data : {
+					urlID : $("#FrmGrid_grid-table").attr("newsId"),
+					urlName : $('#urlName').val(),
+					url : $('#urlAddress').val(),
+					urlArea : $('#areaData').val(),
+					urlLevel : $('#levelData').val(),
+					urlType : $('#typeData').val()
+				}
+			}).done(function(data) {
+				commonTip(data,
+					function() {
+						alert(data.success);
+						searchBaseUrl(0);
+					});
+			}).fail(function() {
+				bootbox.alert("修改失败！");
+			}).always(function() {});
+		}
+	});
+
+	function DownList() {
+		$.ajax({
+			async : true,
+			url : "getSelectData.ofc",
+			dataType : "json"
+		}).done(function(data) {
+			commonTip(data, function() {
+				var areaSelect = "";
+				$.each(data.data.areaData, function(i, areaOption) {
+					areaSelect += "<option value='" + areaOption.areaId + "'>" + areaOption.areaName + "</option>";
+				});
+				$("#areaData").html(areaSelect);
+
+				var levelSelect = "";
+				$.each(data.data.levelData, function(i, levelOption) {
+					levelSelect += "<option value='" + levelOption.levelId + "'>" + levelOption.levelName + "</option>";
+				});
+				$("#levelData").html(levelSelect);
+
+				var typeSelect = "";
+				$.each(data.data.typeData, function(i, typeOption) {
+					typeSelect += "<option value='" + typeOption.typeId + "'>" + typeOption.typeName + "</option>";
+				});
+				$("#typeData").html(typeSelect);
+			});
+		}).fail(function() {
+			bootbox.alert("获取下拉列表失败！");
+		}).always(function() {});
+	}
+
+	function searchBaseUrl(pageStart) {
+		$.ajax({
+			async : false,
+			url : "getBaseUrl.ofc",
+			type : "POST",
+			data : {
+				siteName : $("#siteName").val(),
+				siteUrl : $("#siteUrl").val(),
+				pageStart : pageStart || 0
+			},
+			dataType : "json"
+		}).done(function(data) {
+			commonTip(data,
+				function() {
+					$("#baseUrlGrid").jqGrid('clearGridData'); //清空表格
+					$("#baseUrlGrid").jqGrid('setGridParam', { // 重新加载数据
+						datatype : 'local',
+						data : data.data.jsondataString //  newdata 是符合格式要求的需要重新加载的数据 
+					}).trigger("reloadGrid");
+
+					//给每行添加编辑、删除按钮
+					var ids = jQuery("#baseUrlGrid").jqGrid('getDataIDs');
+					for (var i = 0; i < ids.length; i++) {
+						var id = ids[i];
+						modify = "<div title='编辑选定行' style='float:left;cursor:pointer;' class='ui-pg-div ui-inline-edit'><span class='ui-icon ui-icon-pencil' onclick='updateBaseUrl(" + id + ");'></span></div>"; //这里的onclick就是调用了上面的javascript函数 Modify(id)
+						del = "<div title='删除选中行' style='float:left;margin-left:5px;' class='ui-pg-div ui-inline-del'><span class='ui-icon ui-icon-trash' onclick='deleteBaseUrl(" + id + ");'></span></div>";
+						jQuery("#baseUrlGrid").jqGrid('setRowData', ids[i], {
+							myac : modify + del
+						});
+					}
+
+					$(".tcdPageCode").createPageBar({
+						pageCount : data.data.pageCount,
+						nowPage : (pageStart || 0) + 1,
+						pageSize : data.data.pageSize,
+						totalCount : data.data.count,
+						backFunction : function(pageStart, pageSize) {
+							searchBaseUrl(pageStart - 1);
+						}
+					});
+				}
+			);
+		}).fail(function() {
+			bootbox.alert("获取信息列表失败！");
+		}).always(function() {});
+	}
+	function deleteBaseUrl(id) {
+		var rowDatas = $("#baseUrlGrid").jqGrid('getRowData', id);
+		bootbox.confirm({
+			message : "是否删除(" + rowDatas.urlName + ")的列?",
+			buttons : {
+				cancel : {
+					label : '确定',
+					className : 'btn-success'
+				},
+				confirm : {
+					label : '取消',
+					className : 'btn-danger'
+				}
+			},
+			callback : function(result) {
+				console.log('This was logged in the callback: ' + result);
+				if (result == false) {
+					$.ajax({
+						url : "deleteBaseUrlData.ofc",
+						type : "post",
+						async : false,
+						data : {
+							urlID : rowDatas.urlID,
+						}
+					}).done(function(data) {
+						commonTip(data,
+							function() {
+								bootbox.alert(data.success);
+								searchBaseUrl(0);
+							});
+					}).fail(function() {
+						bootbox.alert("删除失败！");
+					}).always(function() {});
+				}
+			}
+		});
+	}
+
+	function updateBaseUrl(id) {
+		getDownList(id);
+	}
+
+
+	function getDownList(id) {
+		var rowDatas = $("#baseUrlGrid").jqGrid('getRowData', id);
+		$("#sData").attr("opr_type", "edit");
+		$(".ui-widget-overlay").show();
+		$("#editmodgrid-table").show();
+		$("#editBaseUrlType").text("修改数据");
+		$("#FrmGrid_grid-table").attr("newsId", rowDatas.urlID);
+		$("#urlAddress").val(rowDatas.url);
+		$("#urlName").val(rowDatas.urlName);
+		$.ajax({
+			async : true,
+			url : "getSelectData.ofc",
+			dataType : "json"
+		}).done(function(data) {
+			commonTip(data, function() {
+				var areaSelect = "";
+				$.each(data.data.areaData, function(i, areaOption) {
+					if (areaOption.areaName == rowDatas.dataAreaName) {
+						areaSelect += "<option value='" + areaOption.areaId + "' selected = 'selected'>" + areaOption.areaName + "</option>";
+					} else {
+						areaSelect += "<option value='" + areaOption.areaId + "'>" + areaOption.areaName + "</option>";
+					}
+				});
+				$("#areaData").html(areaSelect);
+
+				var levelSelect = "";
+				$.each(data.data.levelData, function(i, levelOption) {
+					if (levelOption.levelName == rowDatas.dataLevelName) {
+						levelSelect += "<option value='" + levelOption.levelId + "' selected = 'selected'>" + levelOption.levelName + "</option>";
+					} else {
+						levelSelect += "<option value='" + levelOption.levelId + "'>" + levelOption.levelName + "</option>";
+					}
+				});
+				$("#levelData").html(levelSelect);
+
+				var typeSelect = "";
+				$.each(data.data.typeData, function(i, typeOption) {
+					if (typeOption.typeName == rowDatas.dataTypeName) {
+						typeSelect += "<option value='" + typeOption.typeId + "' selected = 'selected'>" + typeOption.typeName + "</option>";
+					} else {
+						typeSelect += "<option value='" + typeOption.typeId + "'>" + typeOption.typeName + "</option>";
+					}
+				});
+				$("#typeData").html(typeSelect);
+			});
+		}).fail(function() {
+			bootbox.alert("获取下拉列表失败！");
+		}).always(function() {});
+	}
+</script>

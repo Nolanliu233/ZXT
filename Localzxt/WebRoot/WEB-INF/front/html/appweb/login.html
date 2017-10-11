@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>登录</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+</head>
+<body>
+	<div class="main">
+		<div class="mainBody">
+			<div class="mainBody_firstDiv">
+				<div class="mainBody_firstDiv_left">
+					<span>*</span>
+					<span>账号:</span>
+				</div>
+				<div class="mainBody_firstDiv_right">
+					<input id="login_username" type="text"/>
+				</div>
+			</div>
+			<div class="mainBody_firstDiv">
+				<div class="mainBody_firstDiv_left">
+					<span>*</span>
+					<span>密码:</span>
+				</div>
+				<div class="mainBody_secondDiv_middle">
+					<input id="login_password" type="password"/>
+				</div>
+			</div>
+			<div class="mainBody_firstDiv" style="margin-top:5px">
+				<div class="mainBody_fourthDiv_left" onclick="login();">
+					登录
+				</div>
+				<div class="mainBody_fourthDiv_right" onclick="resetInput();">
+					重置
+				</div>
+				<div class="sigintext"><span>还没有账号？</span><span id="userSigin" class="sigin_link">去注册</span></div>
+				
+			</div>
+		</div>
+	</div>
+<script src="front/lib/jquery-3.2.1.min.js"></script>
+<script src="front/lib/jQuery.md5.js"></script>
+<script src="front/js/basicParameter.js"></script>
+<script src="front/js/tools.js"></script>
+<script>
+var GLOBAL = GLOBAL || {};
+
+var loginqrcode_uuid = $.fn.GetUUID(36,-1);  //正式用，UUID要随机生成
+
+$(function(){
+	
+	//点击键盘登录
+	$(document).keypress(function(e){
+		if(e.keyCode == 13){
+			if($('.messager-window').length == 0){
+				login();
+			}
+		}
+	});
+});
+
+//重置
+function resetInput(){
+	$('#login_username').val('');
+	$('#login_password').val('');
+	$('#login_valiCode').val('');
+}
+
+//登陆请求
+function login(){
+	$.ajax({
+		url :  "bookadd",
+		type : "POST",
+		data : {
+			loginId : $('#login_username').val(),
+			passWord : $.md5($('#login_password').val()),
+			checkCode : $('#login_valiCode').val()
+		},
+		dataType : "json"
+	}).done(function(data) {
+		commonTip(data, function(){
+			window.location = "personCenter.html"
+		});
+	}).fail(function() {
+		alert("网络连接失败！");
+	}).always(function() {
+
+	});
+}
+
+</script>
+</body>
+</html>

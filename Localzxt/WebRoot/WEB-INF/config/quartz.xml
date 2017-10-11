@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<!-- 工作的bean -->
+    <bean id="autoJobs" class="cn.tongyuankeji.common.web.AutoJobs" />
+
+    <!-- job的配置开始 -->
+    <bean id="jobByDayDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="autoJobs" />
+        </property>
+        <property name="targetMethod">
+            <value>autoJobByDay</value>
+        </property>
+    </bean>
+    <!-- job的配置结束 -->
+
+
+    <!-- 调度的配置开始 -->
+    <bean id="crontestJobByDayTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="jobByDayDetail" />
+        </property>
+        <property name="cronExpression">
+    		<!-- 每天早上10点执行任务-->
+            <value>0 0 10 ? * *</value>
+        </property>
+    </bean>
+    <!-- 调度的配置结束 -->
+
+
+    <!-- 启动触发器的配置开始 -->
+    <bean name="startQuertz" lazy-init="false" autowire="no"
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref local="crontestJobByDayTrigger" />   
+            </list>
+        </property>
+    </bean>
+    <!-- 启动触发器的配置结束 -->
+
+</beans>

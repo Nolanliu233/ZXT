@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<title>addNews</title>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<script src="front/js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		
+	</head>
+  
+  <body>
+  	<h1 align="center">新闻录入</h1><br/>
+  	<div style="width:500px;height:auto;margin:0 auto;padding=0">
+  		<form id="newsForm">
+   			<input type="text" name="title"  style="width:500px;height:30px"  placeholder="输入标题"/><br/><br/>
+   			<textarea  name="contentSummary" style="width:500px;height:350px">请输入内容</textarea><br/><br/>
+   			请选择新闻类别：
+   			<select id="type" name="type"></select>
+   			选择排列选项：
+   			<select id="orderBy" name="orderBy"></select><br/>
+   			<input type="button" class="submit" value="提交"/>
+   		</form>
+  	</div>
+   
+  </body>
+  <script>
+  $(function(){
+  	//加载新闻类别和新闻排序
+  	$.ajax({
+  		type:"post",
+  		url:"newsForm.htm",
+  		success:function(data){
+  			console.log(data);
+  			var newsTypes = data.data.newsTypes;
+  			$("#type").html("");
+  			for(var i=0;i<newsTypes.length;i++){
+  				var option = '<option value="'+newsTypes[i].name+'">'+newsTypes[i].value+'</option>';
+  				$("#type").append(option);
+  			}
+  			var newsOrderBys = data.data.newsOrderBys;
+  			$("#orderBy").html("");
+  			for(var j=0;j<newsOrderBys.length;j++){
+  				var option = '<option value="'+newsOrderBys[j].name+'">'+newsOrderBys[j].value+'</option>';
+  				$("#orderBy").append(option);
+  			}
+  			
+  		}
+  	});
+  });
+  	$(".submit").click(function(){
+  		$.ajax({
+  			type:"post",
+  			url:"saveNews.htm",
+  			data:$("#newsForm").serialize(),
+  			success:function(data){
+  				console.log(data);
+  			}
+  		});
+  	});
+  </script>
+</html>

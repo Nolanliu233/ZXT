@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+	<Properties>
+		<Property name="log-path">../webapps/logs/
+		</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout>
+				<pattern>%d{yy-MM-dd HH:mm:ss.SSS} %-5p %c{1} Line%L - %m%n
+				</pattern>
+			</PatternLayout>
+		</Console>
+		<File name="MyFile" fileName="${log-path}/zxt.log" append="true"
+			bufferedIO="true">
+			<PatternLayout>
+				<pattern>%d{yy-MM-dd HH:mm:ss.SSS} %-5p %c{1} Line%L - %m%n
+				</pattern>
+			</PatternLayout>
+		</File>
+	</Appenders>
+	<Loggers>
+		<Root level="debug" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="MyFile" />
+		</Root>
+	</Loggers>
+</Configuration>

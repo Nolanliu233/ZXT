@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<subsystems>
+	<subsystem name="backoffice" header="后台管理">
+		<!-- <module name="system" header="系统维护">
+			<page name="app_setting" header="系统配置" link="getAppSettingTable.ofcx"
+				platform="1">
+				<opr name="edit" header="修改配置" platform="1">
+					<getAppSettingTable />
+					<saveAppSetting />
+				</opr>
+			</page>
+			<page name="site_log" header="操作日志" link="getSiteLogTable.ofcx">
+				<opr name="view" header="查询">
+					<getSiteLogTable />
+					<getUserInfosTables />
+				</opr>
+			</page>
+		</module>
+		<module name="dictionary" header="数据字典">
+			<page name="dict" header="常用选项" link="getDictTable.ofcx">
+				<opr name="view" header="查看">
+					<getDictTable />
+				</opr>
+				<opr name="edit" header="新增、编辑、调整顺序，删除">
+					<createDict />
+					<updateDict />
+					<deleteDict />
+					<changeDictOrder />
+				</opr>
+			</page>
+			<page name="region" header="地区" link="getRegionTable.ofcx">
+				<opr name="view" header="查看">
+					<getRegionTable />
+					<getRegionList />
+				</opr>
+			</page>
+			<page name="industry" header="工业" link="getIndustryTable.ofcx">
+				<opr name="view" header="查看">
+					<getIndustryTable />
+					<getIndustryList />
+				</opr>
+			</page>
+			<page name="specialty" header="行业" link="getSpecialtyTable.ofcx"
+				platform="1">
+				<opr name="view" header="查看列表、查看详细信息" platform="1">
+					<getSpecialtyTable />
+				</opr>
+				<opr name="edit" header="新增、编辑、修改状态" platform="1">
+					<createSpecialty />
+					<updateSpecialty />
+					<changeSpecialtyStatus />
+				</opr>
+			</page>
+		</module> -->
+		<module name="structure" header="组织架构">
+			<!-- <page name="gov" header="园区" link="governmentPark.ofcx"
+				platform="1">
+				<opr name="view" header="查看园区列表和详细信息" platform="1">
+					<queryGov comments="获取园区列表" />
+					<getGovInfo comments="查看详情" />
+					<getAllCompany comments="查看所有入驻企业" />
+				</opr>
+				<opr name="edit" header="新增、编辑、修改园区状态" platform="1">
+					<createGov comments="新建园区" />
+					<updateGov comments="编辑园区" />
+					<changeGovStatus comments="修改状态" />
+					<updateGovCompany comments="修改园区下企业" />
+				</opr>
+			</page> -->
+			<page name="role" header="后台权限" link="permission.ofcx" platform="1">
+				<opr name="view" header="查看列表、查看详细信息" platform="1">
+					<getRoleTable />
+					<getRoleInfo />
+				</opr>
+				<opr name="edit" header="新增、编辑、调整权限、停用/启用" platform="1">
+					<getRoleMask />
+					<createRole />
+					<updateRole />
+					<changeRoleStatus />
+				</opr>
+			</page>
+			<page name="backUser" header="后台用户" link="backUser.ofcx">
+				<opr name="view" header="查看列表、查看详细信息">
+					<backUser />
+					<getbackUserInfosTable comments="加载后台用户列表" />
+					<getbackUserInfoEdit comments="编辑后台用户时获取详细信息" />
+				</opr>
+				<opr name="edit" header="新增、编辑、修改状态">
+					<createbackUserInfo comments="新增后台用户时保存" />
+					<updatebackUserInfo comments="编辑后台用户时保存" />
+					<changebackUserStatus comments="修改后台用户状态" />
+				</opr>
+			</page>
+		</module>
+		<!-- <module name="my_gov" header="园区工具">
+			<page name="my_gov" header="我的园区" link="selfPark.ofcx">
+				<opr name="view" header="查看我的园区详细信息">
+					<getGovInfoSelf comments="查看详情" />
+				</opr>
+				<opr name="edit" header="编辑园区">
+					<updateGovSelf comments="编辑园区" />
+				</opr>
+			</page>
+		</module> -->
+		<module name="informationManager" header="信息审核">
+			<page name="information" header="信息审核" link="informationList.ofcx">
+				<opr name="view" header="查看信息列表">
+					<searchInformationList comments="查看信息列表" />
+					<infoDetail comments="查看详情" />
+					<getInfoById comments="查看详情" />
+					<getInfoDetail comments="查看详情" />
+					<getInfoAttachList comments="查看附件列表" />
+				</opr>
+				<opr name="edit" header="编辑">
+					<editInformation comments="编辑" />
+					<addInfo comments="添加" />
+					<changeInfoStatus comments="修改状态" />
+					<deleteInfo comments="删除" />
+					<errInfo comments="提取错误" />
+					<addInfoAttach comments="添加附件" />
+					<editInfoAttach comments="修改附件" />
+					<deleteInfoAttach comments="删除附件" />
+				</opr>
+				<opr name="audit" header="审核">
+					<auditInfo comments="审核" />
+					<errInformation comments="提取错误" />
+				</opr>
+			</page>
+				<page name="newsManager" header="网站公告"  link="getBackNewsList.ofcx">
+				<opr name="view" header="查看网站公告">
+					<getNewsList comments="查看列表"/>
+				</opr>
+				<opr name="edit" header="编辑">
+					<updateNews comments="编辑新闻"/>
+				</opr>
+				<opr name="save" header="新增">
+					<saveNews comments="编辑新闻"/>
+				</opr>
+				<opr name="delete" header="删除">
+					<deleteNews comments="删除新闻"/>
+				</opr>
+			</page>
+		</module>
+		<module name="info_manage" header="信息管理">
+			<page name="siteManage" header="网站管理" link="siteManage.ofcx">
+				<opr name="view" header="查看网站信息">
+					<getBaseUrlList comments="查看详情" />
+				</opr>
+				<opr name="edit" header="信息修改">
+					<updateBaseUrlData comments="修改" />
+					<deleteBaseUrlData comments="删除" />
+					<addBaseUrlData comments="添加" />
+				</opr>
+			</page>
+			<page name="dataTypeManage" header="信息口管理" link="infoManage.ofcx">
+				<opr name="view" header="查看信息口">
+					<getDataTypeList comments="查看所属信息口详情" />
+				</opr>
+				<opr name="edit" header="信息口修改">
+					<updateDataType comments="所属信息口修改" />
+					<deleteDataType comments="所属信息口删除" />
+					<addDataType comments="所属信息口添加" />
+				</opr>
+			</page>
+		</module>
+		<!-- <module name="sys_manage" header="系统管理">
+			<page name="userManage" header="用户管理" link="userManage.ofcx">
+				<opr name="view" header="查看用户">
+					<getUserInfoList comments="查看" />
+				</opr>
+				<opr name="edit" header="用户修改">
+					<updateUser comments="修改" />
+				</opr>
+			</page>
+			<page name="sysAnnounce" header="系统公告" link="sysAnnounce.ofcx">
+				<opr name="view" header="查看公告">
+					<getNoticeList comments="查看" />
+				</opr>
+				<opr name="edit" header="公告修改">
+					<updateNotice comments="修改" />
+				</opr>
+			</page>
+			<page name="sysLog" header="系统日志" link="sysLog.ofcx">
+				<opr name="view" header="查看日志">
+					<getLogList comments="查看" />
+				</opr>
+				<opr name="edit" header="日志修改">
+					<updateLog comments="修改" />
+				</opr>
+			</page>
+		</module> -->
+	</subsystem>
+</subsystems>

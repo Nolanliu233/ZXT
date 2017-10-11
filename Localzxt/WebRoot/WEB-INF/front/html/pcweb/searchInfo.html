@@ -1,0 +1,577 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>信息查询</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=1" />
+<link rel="stylesheet" type="text/css" href="front/css/style.css" />
+<link rel="stylesheet" type="text/css" href="front/css/pcweb/page.css" />
+<link href="front/fonts/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+#model { display: none; }
+.simple_search_item a { float: left; margin: 0px !important; }
+.simple_search_item .checkAll { margin-left: 156px !important; }
+.simple_search_item .higher_search { margin-left: 177px !important; }
+.search_time { padding: 0 28px; margin-top: 10px; }
+.search_time .search_start_time { float: left; width: 300px; }
+.search_time .search_start_time { float: left; width: 300px; }
+.search_time input { width: 100px; margin-left: 5px; height: 30px; }
+.infoTypes { width: 290px; float: right; }
+.infoType { width: 100px; float: left; }
+.infoTypes_label { width: 50px !important; }
+.hint-input-span-container { width: 300px; background-color: #fff; border: 1px solid #ccc; box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); display: inline-block; color: #555; vertical-align: middle; border-radius: 1px; max-width: 100%; line-height: 23px; }
+.hint-input-span-container .tag { padding: -2px; font-size: 12px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px; display: inline-block; height: 23px; }
+.label { font-size: 10px; padding: 4px 6px; border: none; text-shadow: none; border-radius: 3px; font-weight: 200; }
+.label-primary { background: #2693FF; color: white; }
+.hint-input-span-container span i[data-role='remove'] { cursor: pointer; }
+.tag { margin-right: 2px; color: white; }
+.tag [data-role="remove"] { margin-left: 2px; cursor: pointer; position: relative; top: -8px; }
+.hint-search { border: none; box-shadow: none; outline: none; padding: 0; margin: 0; width: 40px; height: 35px; border-left: 1px solid #ccc; float: right; max-width: inherit; background-color: #ccc; text-align: center; line-height: 35px; cursor: pointer; }
+.hint-block { position: absolute; width: 300px; padding-top: 10px; max-height: 120px; background-color: #fff; overflow: auto; display: none; z-index: 9999; }
+.hint-chose { width: 100%!important; padding: 2px 4px; margin-bottom: 10px; line-height: 36px; }
+.hint-ul { text-decoration: none; list-style-type: none; padding-left: 5px; }
+.hint-ul li { font-size: 14px; padding: 2px 4px; }
+.hint-ul li:hover { background-color: #eee; }
+.active { color: #0166b6; }
+.text-left simple_search_item a:HOVER { color: #0166b6; }
+.list_company li div font.font-red{color:red;font:14px "\5FAE\8F6F\96C5\9ED1", "\5B8B\4F53", "\9ED1\4F53";}
+#model{
+	display: none;
+}
+.link_menu li span{
+	float: left;
+width: auto;
+height: 45px;
+margin: 0 30px 0 0;
+color: #666666;
+font: 17px/45px "\5FAE\8F6F\96C5\9ED1","\5B8B\4F53","\9ED1\4F53";
+}
+.link_menu li.on span{
+	color: #1777cb;
+border-bottom: 2px solid #1777cb;
+font: bold 17px/45px "\5FAE\8F6F\96C5\9ED1","\5B8B\4F53","\9ED1\4F53";
+}
+</style>
+<!--[if lt IE 9]>
+			<script src="front/js/html5shiv.js"  type="text/javascript"></script>
+			<script src="front/js/respond.min.js"  type="text/javascript"></script>
+		<![endif]-->
+</head>
+
+<body>
+	<div id="main" class='nav-index'>
+<div id="headers"></div>
+<article class="container clearfix main">
+	<article class="container clearfix">
+			
+			<div class="content_left">
+				<div class="content_txt float-left margin-bottom10">
+					<div class="search-all con">
+						<div class="quick-search filter-search txt-center">
+							<input type="text" name="" id="search_input" value="" placeholder="全站搜索" />
+							<button class="btn btnTheme">搜索</button>
+							<input type="checkbox" name="" id="check" class="search_in_result"/>
+							<label for="check"><a>在结果中搜索</a></label>
+							<br />
+							<span class="text-left simple_search_item"> <a class="span undead">未截止项目</a> <a class="span checkAll">查看全部</a> <a id="searchMoreBtn" href="javascript:void(0)" class="filter-link higher_search">高级搜索</a> </span>
+							<div class="search_time">
+								<div class="search_start_time">
+									<label for="">发布日期</label>
+									<input id="simple_datelineBegin" onclick="WdatePicker()"/>
+									-
+									<input id="simple_datelineEnd" type="time" onclick="WdatePicker()"/>
+								</div>
+								<div class="search_end_time">
+									<label for="">截止日期</label>
+									<input id="simple_deadlineBegin" onclick="WdatePicker()"/>
+									-
+									<input id="simple_deadlineEnd"  type="time" onclick="WdatePicker()"/>
+								</div>
+							</div>
+						</div>
+						<div class="senior-search filter-search hide">
+							<ul class="clearfix">
+								<li>
+									<label for="">关键词</label>
+									<input type="text" id="keyword"/>
+									<label for="" class="infoTypes_label">消息口</label>
+									<div class="infoTypes"></div>
+								</li>
+								<li>
+									<label for="">发布日期范围</label>
+									<input id="datelineBegin" onclick="WdatePicker()"/>
+									-
+									<input id="datelineEnd" onclick="WdatePicker()"/>
+									<a class="clear">清除</a> </li>
+								<li>
+									<label for="">截止日期范围</label>
+									<input id="deadlineBegin"  onclick="WdatePicker()"/>
+									-
+									<input id="deadlineEnd" onclick="WdatePicker()"/>
+									<a class="clear">清除</a> </li>
+								<li> 
+									<!-- <label for="">结果顺序</label><select name="" id="solarSort"><option value="">按照项目发布日期排序</option></select> -->
+									<label for="">每页显示</label>
+									<select name="pageSize" id="pageSize">
+										<option value="10">10</option>
+										<option value="5">5</option>
+										<option value="20">20</option>
+										<option value="50">50</option>
+									</select>
+									条结果 </li>
+								<li class="txt-center">
+									<button class="btn btnSearch">搜索</button>
+									<button class="btn btnReset">重置</button>
+								</li>
+							</ul>
+							<div><a href="javascript:void(0)" class="filter-link">快捷搜索&gt;&gt;</a></div>
+						</div>
+					</div>
+				</div>
+				<div class="menu_sub">
+					<div class="link_menu">
+						<ul>
+							<li class="relevancy on"><a class="relevancyContent">相关度</a></li>
+							<li class="publishTime"><a>发布日期</a></li>
+							<li class="deadlineTime"><a>截止日期</a></li>
+							<li class="info_source"><a>消息来源</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="content_txt float-left" id="contentResult">
+				</div>
+				<div class="tcdPageCode"></div>
+					<div id="model">
+						<div class="list_company float-left">
+							<ul><a href="infomation.html?sysId=￥sysId￥">￥title￥</a></ul>
+							<li>
+								￥content￥
+							</li>
+							<li class="margin-top10">
+								<div class="float-left">
+									申报开始日期：<font class="font-blue data">￥beginAt￥</font>     申报截止日期：<font class="font-orange">￥endAt￥</font>
+								</div> 
+								<div class="float-right"><span class="source">消息来源：<font class="font-red">￥resource￥</font></span></div>
+							</li>
+						</div>
+						<div class="line_dotted clearfix"></div>
+					</div>
+			</div>
+			
+		</aside>
+		<aside class="right_content float-right">
+			<div class="sub_menu">
+				<div class="menu_link">
+					<ul>
+						<li><a href="#">热门资讯</a></li>
+					</ul>
+				</div>
+				<!--<div class="more_link">你当前位置：<a href="index.html">首页</a> > 招聘新闻 </div>--> 
+			</div>
+			<div class="content_right"> 
+				<div class="news_list">
+
+					<ul id="hot_informations"></ul>
+
+				</div>
+			</div>
+			<div class="sub_menu margin-top20">
+				<div class="menu_link">
+					<ul>
+						<li><a href="#">网站公告</a></li>
+					</ul>
+				</div>
+				<div class="more_links"><a href="newsIndex.html">更多...</a></div>
+			</div>
+			<div class="content_right"> 
+	
+				<div class="news_list">
+
+					<ul id="index_news_list"></ul>
+
+				</div>
+			</div>
+		</aside>
+	</article>
+</div>
+
+<section class="wrapper">
+	<article class="container clearfix">
+		<div id="footer"></div>
+	</article>
+</section>
+<script src="front/js/jquery-3.2.1.min.js" type="text/javascript" charset="utf-8"></script> 
+<script src="front/js/basicParameter.js" type="text/javascript" charset="utf-8"></script> 
+<script src="front/js/tools.js" type="text/javascript" charset="utf-8"></script> 
+<!--[if lt IE 9]>
+			<script type="text/javascript">
+			 window.jQuery || document.write("<script type='text/javascript' src='http://cdn.bootcss.com/jquery/1.9.0/jquery.min.js'>"+"<"+"/script>");
+			</script>
+		<![endif]--> 
+
+<script src="front/js/pcweb/common.js" type="text/javascript" charset="utf-8"></script> 
+<script src="front/js/pcweb/scroll.js" type="text/javascript" charset="utf-8"></script> 
+<script src="front/js/pcweb/page.js" type="text/javascript" charset="utf-8"></script> 
+<script src="front/lib/underscore.js" type="text/javascript" charset="utf-8"></script> 
+<script src="front/js/basicParameter.js" type="text/javascript" charset="utf-8"></script> 
+<script src="front/js/tools.js" type="text/javascript" charset="utf-8"></script> 
+<script src="front/js/pcweb/select.js" type="text/javascript" charset="utf-8"></script> 
+<script language="javascript" type="text/javascript"src="front/js/My97DatePicker/WdatePicker.js"></script> 
+<script type="text/javascript" charset="utf-8">
+			var nowPage = 1;
+			var pageSize = 10;
+			var pageCount = 1;
+			var state;
+			var infoTypes = null;
+			var param, dataTypeId;
+			//初始化加载列表
+			$("document").ready(
+				function(){
+					//url中是否有传递keyword(是否点击全局搜索)
+					param = getParam("keyWord");
+					dataTypeId = getUrlParams("typeId", true);
+					//设置排序
+					$(".publishTime").attr("sortNumber",BPR.sortFeildState.beginAt);
+					$(".deadlineTime").attr("sortNumber",BPR.sortFeildState.endAt);
+					$(".info_source").attr("sortNumber",BPR.sortFeildState.typeId);
+					state=0;
+					//获取消息口和结果排序集
+					getInfoTypes();
+					getIndexNews();
+					getHotInformations();
+				}
+			);
+			//获取消息口和结果排序集
+			function getInfoTypes(){
+				$.ajax({
+					type:"post",
+					url:"getUserDateType.htm",
+					success:function(data){
+						$(".infoTypes").html("");
+						if(data.data!=undefined){
+							//消息口
+							infoTypes = data.data;
+							if(param!=""&&param!=null){
+								$("#search_input").val(param);
+								$(".btnTheme").click();
+							} else if(dataTypeId){
+								$("#searchMoreBtn").click();
+								$(".infoTypes").createSelect({
+									data:infoTypes,
+									selectedId : dataTypeId
+								});
+								advancedSearch();
+							} else {
+								$(".infoTypes").createSelect({
+									data:infoTypes
+								});
+								getList();
+							}
+						}
+					}
+				});
+			}
+			//快捷搜索和高级搜索切换
+			$(".filter-link").click(function() {
+				$(this).siblings(".active").removeClass("active");
+				$(".filter-search").show(300);
+				$(this).parent().parent().hide(300);
+			});
+			$("#hor").Scroll({ line: 1, speed: 1000, timer: 2000 });
+			
+			//得到消息列表
+			function getList(){
+				$.ajax({
+					type:"post",
+					url:"informationList.htm",
+					data:{"nowPage":nowPage-1,"pageSize":pageSize},
+					success:function(data){
+						$("#contentResult").html("");
+						var infoList = data.data.infoList;
+							pageCount = data.data.pageCount;
+							
+						for(var i=0;i<infoList.length;i++){
+							var beginAt = infoList[i].beginAt==undefined?"暂无":infoList[i].beginAt;
+							var endAt = infoList[i].endAt==undefined?"一直有效":infoList[i].endAt;
+							var li = '<div class="list_company float-left"><ul><a href="infomation.html?sysId='+infoList[i].sysId+'" target="_blank">'+infoList[i].title+'</a></ul>'+
+								'<li>'+infoList[i].detailSource+'</li>'+
+								'<li class="margin-top10">'+
+								'<div class="float-left">'+
+								'申报开始日期：<font class="font-blue">'+beginAt+'</font>     申报截止日期：<font class="font-orange">'+endAt+'</font>'+
+								'</div>'+
+								'<div class="float-right"><span>消息来源：<font class="font-red">'+(infoList[i].fromWebTitle||"未知")+'</span></div></li><div class="line_dotted clearfix"></div></div>';
+							$("#contentResult").append(li);
+						}
+						$(".tcdPageCode").createPageBar({
+							totalCount:data.data.count,
+							pageCount:pageCount,
+							nowPage:nowPage,
+							pageSize:pageSize,
+							backFunction:function(pageStart,pageSize){
+								nowPage = pageStart;
+								getList();
+							}
+						});
+					}
+				});
+			};
+			
+			//重置
+			$(".btnReset").on('click',function(){
+				$(".senior-search input").val("");
+				$(".infoTypes .col-xs-10 .hint-input-span-container span").remove();
+				$("#pageSize").val($("#pageSize").find("option").eq(0).val());
+			});
+			$(".clear").on('click',function(){
+				$(this).parent("li").find("input").val("");
+			})
+			//排序
+			$(".link_menu li").on('click',function(){
+				isDesc = true;
+				if(!$(this).hasClass("relevancy")){
+					//排序字段
+					sortFeild = $(this).attr("sortNumber");
+					$(this).siblings(".on").removeClass("on");
+					$(this).addClass("on");
+				}else{
+					sortFeild = null;
+					$(this).siblings(".on").removeClass("on");
+					$(this).addClass("on");
+				}
+				keyword = $("#search_input").val();
+				//发布时间开始
+				datelineBegin = $("#simple_datelineBegin").val().trim()==""?null:$("#simple_datelineBegin").val().trim();
+				//发布时间结束
+				datelineEnd = $("#simple_datelineEnd").val().trim()==""?null:$("#simple_datelineEnd").val().trim();
+				//截止日期开始
+				deadlineBegin =$("#simple_deadlineBegin").val().trim()==""?null:$("#simple_deadlineBegin").val().trim();
+				//截止日期结束
+				deadlineEnd = $("#simple_deadlineEnd").val().trim()==""?null:$("#simple_deadlineEnd").val().trim();
+				//在结果中搜索
+				searchInResult = $(".search_in_result").is(":checked");
+				//将undead置为false
+				undead = false;
+				advancedSearch();
+			});
+			
+			
+			//提取index_news_list的getList方法
+			function getIndexNews(){
+				$.ajax({
+					type:"post",
+					url:"indexNewsList.htm",
+					data:{"nowPage":nowPage-1,"pageSize":pageSize},
+					success:function(data){
+						$("#index_news_list").html("");
+						var newsList = data.data.newsList;
+						for(var i=0;i<newsList.length;i++){
+							var li = '<li>';
+								li+='<a class="ellipsis" href="newsContent.html?newsId='+newsList[i].newsId+'" target="_blank"> · '+newsList[i].title+'</a>'+
+								'</li>';
+							$("#index_news_list").append(li);
+						}
+					}
+				});
+			};
+			
+			//提取getHotInformations的getList方法
+			function getHotInformations(){
+				$.ajax({
+					type:"post",
+					url:"getHotInformations.htm",
+					data:{"nowPage":nowPage-1,"pageSize":pageSize},
+					success:function(data){
+						commonTip(data,function(){
+							$("#hot_informations").html("");
+							var hotInfo = data.data;
+							for(var i=0;i<hotInfo.length-2;i++){
+								var li = '<li>';
+									li+='<a class="ellipsis" href="infomation.html?sysId='+hotInfo[i].sysId+'" target="_blank"> · '+hotInfo[i].title+'</a>'+
+								'</li>';
+								$("#hot_informations").append(li);
+							}	
+						} );
+					}
+				});
+			};
+			
+			var pageStart = 0;
+			var pageSize = 10;
+			//关键词
+			var keyword = null;
+			//消息口
+			var typeIds = [];
+			//发布时间开始
+			var datelineBegin = null;
+			//发布时间结束
+			var datelineEnd = null;
+			//截止日期开始
+			var deadlineBegin = null;
+			//截止日期结束
+			var deadlineEnd = null;
+			//排序方式
+			var sortFeild = null;
+			var undead = false;
+			var isDesc = true;
+			var searchInResult = false;
+			function getParams(pageStart){
+				pageStart = pageStart;
+				pageSize = $("#pageSize").find("option:selected").val();
+				//关键词
+				keyword = $("#keyword").val();
+				typeIds = [];
+				//消息口
+				$(".infoTypes .hint-input-span-container span.tag").each(function(){
+					typeIds.push($(this).find("span").attr("typeid"));
+				});
+				//发布时间开始
+				datelineBegin = $("#datelineBegin").val();
+				//发布时间结束
+				datelineEnd = $("#datelineEnd").val();
+				//截止日期开始
+				deadlineBegin =$("#deadlineBegin").val();
+				//截止日期结束
+				deadlineEnd = $("#deadlineEnd").val();
+			}
+			
+			//高级搜索文章列表
+			$(".btnSearch").click(function(){
+				undead = false;
+				getParams(0);
+				advancedSearch();
+			});
+			
+			//点击未截止项目
+			$(".undead").click(function(){
+				$(this).siblings(".active").removeClass("active");
+				$(this).addClass("active");
+				pageStart = null;
+				//关键词
+				keyword = null;
+				//消息口
+				typeIds = null;
+				//发布时间开始
+				datelineBegin = null;
+				//发布时间结束
+				datelineEnd = null;
+				//截止日期开始
+				deadlineBegin =null;
+				//截止日期结束
+				deadlineEnd = null;
+				sortFeild = null;
+				undead = true;
+				$(".link_menu li").siblings().find('span').removeClass("desc");
+				$(".link_menu li").siblings().find('span').removeClass("asc");
+				$(".relevancy").find("span").addClass("relevancyContent");
+				advancedSearch();
+			});
+			
+			//查看全部
+			$(".checkAll").click(function(){
+				$(".link_menu li").siblings().find('span').removeClass("desc");
+				$(".link_menu li").siblings().find('span').removeClass("asc");
+				$(".relevancy").find("span").addClass("relevancyContent");
+				$(this).siblings(".active").removeClass("active");
+				$(this).addClass("active");
+				pageStart = null;
+				//关键词
+				keyword = null;
+				//消息口
+				typeIds = null;
+				//发布时间开始
+				datelineBegin = null;
+				//发布时间结束
+				datelineEnd = null;
+				//截止日期开始
+				deadlineBegin =null;
+				//截止日期结束
+				deadlineEnd = null;
+				sortFeild = null;
+				undead = false;
+				advancedSearch();
+			});
+			
+			//全局搜索
+			$(".btnTheme").click(function(){
+				//关键词
+				keyword = $("#search_input").val();
+				//发布时间开始
+				datelineBegin = $("#simple_datelineBegin").val().trim()==""?null:$("#simple_datelineBegin").val().trim();
+				//发布时间结束
+				datelineEnd = $("#simple_datelineEnd").val().trim()==""?null:$("#simple_datelineEnd").val().trim();
+				//截止日期开始
+				deadlineBegin =$("#simple_deadlineBegin").val().trim()==""?null:$("#simple_deadlineBegin").val().trim();
+				//截止日期结束
+				deadlineEnd = $("#simple_deadlineEnd").val().trim()==""?null:$("#simple_deadlineEnd").val().trim();
+				//在结果中搜索
+				searchInResult = $(".search_in_result").is(":checked");
+				//将undead置为false
+				undead = false;
+				isDesc = false;
+				advancedSearch();
+			});
+			
+			function advancedSearch(){
+				if(pageStart==0){
+					pageStart = 1;
+				}
+				$.ajax({
+					type:"post",
+					url:"informationList.htm",
+					data:{
+						"pageStart":pageStart-1,
+						"pageSize":pageSize,
+						"title":keyword,
+						"typeIds":typeIds,
+						"datelineBegin":datelineBegin,
+						"datelineEnd":datelineEnd,
+						"deadLineAtBegin":deadlineBegin,
+						"deadLineAtEnd":deadlineEnd,
+						"sortFeild":sortFeild,
+						"isDesc":isDesc,
+						"searchInResult":searchInResult,
+						"undead":undead
+					},
+					success:function(result){
+						commonTip(result, function(){
+						$("#contentResult").html("");
+						var data = result.data;
+						if(data && data.infoList && data.infoList.length){
+							state=1;
+							var infoList = data.infoList, hightlighting = data.hightlighting;
+							var item;
+							for(var i = 0 ;i < infoList.length; i++){
+								item = infoList[i];
+									$("#contentResult").append($("#model").html().
+									replace("￥title￥", hightlighting?(hightlighting[item.sysId].title || item.title):item.title).
+									replace("￥content￥", hightlighting?(hightlighting[item.sysId].content || item.detailSource):item.detailSource).
+									replace("￥sysId￥", item.sysId).
+									replace("￥resource￥",item.fromWebTitle || "未知").
+									replace("￥beginAt￥",item.beginAt?item.beginAt:"暂无").
+									replace("￥endAt￥",item.endAt?item.endAt:"永久"));
+							}
+							pageCount = data.pageCount;
+							$(".tcdPageCode").createPageBar({
+									totalCount:data.count,
+									pageCount:pageCount,
+									nowPage:nowPage,
+									pageSize:pageSize,
+									backFunction:function(pageStart,pageSize){
+										nowPage = pageStart;
+										advancedSearch();
+									}
+								});
+							} else {
+								$(".tcdPageCode").html("");
+								$("#contentResult").html("没有找到符合条件的数据！");
+							}
+						});
+					}
+				});
+			}
+$(function(){
+	//json数据包
+});
+		</script>
+</body>
+</html>
